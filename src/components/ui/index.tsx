@@ -358,7 +358,7 @@ export function NotificationDrawer({ onBack }: { onBack: () => void }) {
   ];
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: ETL.color.surface, zIndex: 150, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'fixed', inset: 0, background: ETL.color.surface, zIndex: 150, display: 'flex', flexDirection: 'column' }}>
       <div style={{ padding: 'max(60px, env(safe-area-inset-top, 0px) + 20px) 20px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
         <button onClick={onBack} style={{ width: 40, height: 40, borderRadius: 20, background: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: ETL.shadow.sm }}>
           {(Icon as any).chevL(18, ETL.color.neutral, false)}
@@ -423,7 +423,8 @@ export function IOSDevice({ children, isMobile = false }: { children: ReactNode;
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden' // Trap the viewport
+        overflow: 'hidden', // Trap the viewport
+        transform: 'translateZ(0)'
       }}>
         {children}
       </div>
@@ -442,7 +443,7 @@ export function IOSDevice({ children, isMobile = false }: { children: ReactNode;
       <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 140, height: 32, background: '#000', borderBottomLeftRadius: 18, borderBottomRightRadius: 18, zIndex: 100 }}>
         <div style={{ position: 'absolute', right: 28, top: 12, width: 6, height: 6, borderRadius: 3, background: '#1c1c1e' }}/>
       </div>
-      <div style={{ width: '100%', height: '100%', background: '#fff', borderRadius: 32, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ width: '100%', height: '100%', background: '#fff', borderRadius: 32, overflow: 'hidden', position: 'relative', transform: 'translateZ(0)' }}>
         {children}
       </div>
     </div>

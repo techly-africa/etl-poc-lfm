@@ -143,7 +143,7 @@ function Prototype({ tweaks, isMobile }) {
       paddingBottom: 120,
     }}>
       {screen}
-      {stage === 'app' && <BottomNav active={tab} onChange={setTab} />}
+      {stage === 'app' && <BottomNav active={tab} onChange={(newTab) => { setTab(newTab); setWorkoutOpen(false); }} />}
       {workoutOpen && <WorkoutDetail onClose={closeWorkout} onComplete={closeWorkout} />}
     </div>
   );

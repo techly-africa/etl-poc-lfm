@@ -183,7 +183,7 @@ export function DailyQuests({ quests, onComplete }) {
 // Agaseke reward popper — confetti + opening basket on milestone
 export function AgasekePopper({ message, onClose }) {
   return (
-    <div style={{ position: 'absolute', inset: 0, zIndex: 150, background: 'rgba(14,42,31,0.85)', backdropFilter: 'blur(8px)',
+    <div style={{ position: 'fixed', inset: 0, zIndex: 150, background: 'rgba(14,42,31,0.85)', backdropFilter: 'blur(8px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 24,
       animation: 'fadeBg 0.3s' }}>
       <style>{`

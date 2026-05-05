@@ -2,7 +2,7 @@ import React from 'react';
 import { ETL, tStyle } from '../constants/tokens';
 import { useT } from '../i18n/index';
 import { Icon, PhaseBadge, WorkoutThumb, RewardBadge } from '../components/art/index';
-import { EXERCISE_DEMOS, ExerciseDemoPlayer, VideoThumb } from '../components/video/index';
+import { EXERCISE_DEMOS, ExerciseDemoPlayer, VideoThumb, StatPill, FAQItem } from '../components/video/index';
 import { ScreenHeader, ScrollPage, Btn, Card, ProgressBar, ArcProgress, SectionTitle } from '../components/ui/index';
 
 // Move screen (Fitness) — phases + week selector + workout cards.
@@ -210,7 +210,7 @@ export function WorkoutDetail({ onClose, onComplete }) {
 
   return (
     <div style={{
-      position: 'absolute', inset: 0, background: ETL.color.surface, zIndex: 100,
+      position: 'fixed', inset: 0, background: ETL.color.surface, zIndex: 100,
       display: 'flex', flexDirection: 'column',
       animation: 'slideUp 0.35s cubic-bezier(0.2, 0.8, 0.3, 1)',
     }}>
@@ -240,7 +240,7 @@ export function WorkoutDetail({ onClose, onComplete }) {
       </div>
 
       {/* Body */}
-      <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
         {resting ? (
           <RestTimer/>
         ) : (
@@ -268,15 +268,18 @@ export function WorkoutDetail({ onClose, onComplete }) {
 export function ExerciseCard({ ex, idx, onLog }) {
   const [reps, setReps] = React.useState(ex.reps);
   const [demo, setDemo] = React.useState(false);
+  const def = EXERCISE_DEMOS[ex.name] || EXERCISE_DEMOS.Squats;
+
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {/* 1. Video & Reps */}
       <div style={{
         background: '#fff', borderRadius: ETL.radius.xl, padding: 20,
-        flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14,
-        boxShadow: ETL.shadow.md,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14,
+        boxShadow: ETL.shadow.md, flexShrink: 0
       }}>
         <div style={{ width: '100%' }}>
-          <VideoThumb kind="exercise" label="" dur={`0:${EXERCISE_DEMOS[ex.name]?.duration || 24}`} h={170}
+          <VideoThumb kind="exercise" label="" dur={`0:${def.duration || 24}`} h={170}
             hue={idx % 2 === 0 ? 'green' : 'orange'} onPlay={() => setDemo(true)}/>
         </div>
         {demo && <ExerciseDemoPlayer name={ex.name} onClose={() => setDemo(false)}/>}
@@ -296,8 +299,41 @@ export function ExerciseCard({ ex, idx, onLog }) {
           </div>
         </div>
       </div>
-      <div style={{ height: 16 }}/>
-      <Btn kind="primary" size="lg" full onClick={onLog}>Log set & rest</Btn>
+
+      {/* 2. Details & Coaching */}
+      <div style={{ background: '#fff', borderRadius: ETL.radius.xl, padding: 20, boxShadow: ETL.shadow.md, flexShrink: 0 }}>
+        <SectionTitle sub="Why this matters">Benefits & Info</SectionTitle>
+        <div style={{ display: 'flex', gap: 10, marginTop: 12, marginBottom: 24 }}>
+          <StatPill label="Target" value="Large Muscles" color="primary" />
+          <StatPill label="Burn" value="~150 kcal" color="orange" />
+          <StatPill label="Focus" value="Stability" color="primary" />
+        </div>
+
+        <SectionTitle sub="Setup & Form">Instructions</SectionTitle>
+        <div style={{ marginTop: 12, marginBottom: 24 }}>
+          {def.steps && def.steps.map((s, i) => (
+            <div key={i} style={{ display: 'flex', gap: 12, marginBottom: 12, alignItems: 'flex-start' }}>
+              <div style={{ width: 20, height: 20, borderRadius: 10, background: ETL.color.primary, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>{i + 1}</div>
+              <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral }}>{s.text}</div>
+            </div>
+          ))}
+          <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral60, lineHeight: 1.6, marginTop: 12 }}>
+            Keep your core engaged throughout. Avoid arching your back or rushing the eccentric (lowering) phase. Proper form delivers 2x the results of heavy weights with bad form.
+          </div>
+        </div>
+
+        <SectionTitle sub="Common questions">FAQ</SectionTitle>
+        <div style={{ marginTop: 12, marginBottom: 24 }}>
+          <FAQItem q="What if I feel pain?" a="Stop immediately. Ensure your knees aren't tracking past your toes and that you're breathing out on the exertion phase." />
+          <FAQItem q="How fast should I go?" a="Control the descent for 2 seconds, pause, and explode up in 1 second." />
+        </div>
+
+        <Btn kind="secondary" full onClick={() => alert('Message sent to Coach Aline!')}>Ask Coach Aline</Btn>
+      </div>
+
+      <div style={{ flexShrink: 0 }}>
+        <Btn kind="primary" size="lg" full onClick={onLog}>Log set & rest</Btn>
+      </div>
     </div>
   );
 }
@@ -326,7 +362,7 @@ export function CompletionScreen({ onClose }) {
   })));
   return (
     <div style={{
-      position: 'absolute', inset: 0, background: ETL.color.surface, zIndex: 110,
+      position: 'fixed', inset: 0, background: ETL.color.surface, zIndex: 110,
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       padding: 24, overflow: 'hidden',
     }}>

@@ -4,7 +4,7 @@ import { useT } from '../i18n/index';
 import { Icon, MealThumb } from '../components/art/index';
 import { KinyarwandaProverb } from '../components/art/rw';
 import { ScreenHeader, ScrollPage, Card, MacroRing, ProgressBar, SectionTitle, Btn } from '../components/ui/index';
-import { RecipeDemoPlayer, VideoThumb } from '../components/video/index';
+import { RecipeDemoPlayer, VideoThumb, RECIPES, StatPill, FAQItem } from '../components/video/index';
 
 // Nourish screen — IF-aware nutrition timeline.
 
@@ -121,7 +121,7 @@ export function NourishScreen({ onNav }) {
       </div>
 
       <div style={{ height: 80 }}/>
-      {recipe && <RecipeDemoPlayer id={recipe} onClose={() => setRecipe(null)}/>}
+      {recipe && <RecipeDetail id={recipe} onClose={() => setRecipe(null)}/>}
     </ScrollPage>
   );
 }
@@ -188,5 +188,82 @@ export function NourishPill({ children, color = 'neutral' }) {
       ...tStyle('small'), padding: '4px 10px', borderRadius: 999,
       background: palettes.bg, color: palettes.fg, fontWeight: 600,
     }}>{children}</span>
+  );
+}
+
+export function RecipeDetail({ id, onClose }) {
+  const [demo, setDemo] = React.useState(false);
+  const r = RECIPES[id] || RECIPES.beanBowl;
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: ETL.color.surface, zIndex: 100,
+      display: 'flex', flexDirection: 'column',
+      animation: 'slideUp 0.35s cubic-bezier(0.2, 0.8, 0.3, 1)',
+    }}>
+      <style>{`@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }`}</style>
+
+      {/* Header */}
+      <div style={{ padding: '60px 20px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <button onClick={onClose} style={{
+          width: 40, height: 40, borderRadius: 20, background: '#fff',
+          border: 'none', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: ETL.shadow.sm,
+        }}>{Icon.chevL(18, ETL.color.neutral, false)}</button>
+        <div style={{ flex: 1 }}>
+          <div style={{ ...tStyle('overline'), color: ETL.color.secondary, textTransform: 'uppercase' }}>Recipe Detail</div>
+          <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>{r.name}</div>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column', gap: 20, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        {/* Video & Title */}
+        <div style={{
+          background: '#fff', borderRadius: ETL.radius.xl, padding: 20,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14,
+          boxShadow: ETL.shadow.md, flexShrink: 0
+        }}>
+          <div style={{ width: '100%' }}>
+            <VideoThumb kind="recipe" label="" dur={`0:${r.duration || 30}`} h={170} onPlay={() => setDemo(true)}/>
+          </div>
+          <div style={{ ...tStyle('h1'), color: ETL.color.neutral, textAlign: 'center' }}>{r.name}</div>
+          <div style={{ ...tStyle('h4'), color: ETL.color.secondary, textAlign: 'center' }}>{r.cuisine}</div>
+        </div>
+
+        {/* Details & Coaching */}
+        <div style={{ background: '#fff', borderRadius: ETL.radius.xl, padding: 20, boxShadow: ETL.shadow.md, flexShrink: 0 }}>
+          <SectionTitle sub="Why this matters">Benefits & Info</SectionTitle>
+          <div style={{ display: 'flex', gap: 10, marginTop: 12, marginBottom: 24 }}>
+            <StatPill label="Calories" value="620 kcal" color="orange" />
+            <StatPill label="Protein" value="38g" color="primary" />
+            <StatPill label="Fiber" value="High" color="primary" />
+          </div>
+
+          <SectionTitle sub="What you need">Ingredients & Prep</SectionTitle>
+          <div style={{ marginTop: 12, marginBottom: 24 }}>
+            {r.timeline && r.timeline.map((s, i) => (
+              <div key={i} style={{ display: 'flex', gap: 12, marginBottom: 12, alignItems: 'flex-start' }}>
+                <div style={{ width: 20, height: 20, borderRadius: 10, background: ETL.color.secondary, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>{i + 1}</div>
+                <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral }}>{s.text}</div>
+              </div>
+            ))}
+            <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral60, lineHeight: 1.6, marginTop: 12 }}>
+              Ensure your beans are soaked overnight if using dry ones. The secret to the Rwandan finish is the avocado richness combined with a splash of fresh lime. Always serve warm.
+            </div>
+          </div>
+
+          <SectionTitle sub="Common questions">FAQ</SectionTitle>
+          <div style={{ marginTop: 12, marginBottom: 24 }}>
+            <FAQItem q="Can I substitute ingredients?" a="Yes! You can swap beans for lentils or avocado for a drizzle of olive oil depending on your phase goals." />
+          </div>
+
+          <Btn kind="secondary" full onClick={() => alert('Message sent to Coach Jeanne!')}>Ask Coach Jeanne</Btn>
+        </div>
+      </div>
+      
+      {demo && <RecipeDemoPlayer id={id} onClose={() => setDemo(false)}/>}
+    </div>
   );
 }

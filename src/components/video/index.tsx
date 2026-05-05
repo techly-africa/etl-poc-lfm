@@ -46,7 +46,7 @@ export function DemoPlayer({ duration, steps, render, title, sub, onClose, accen
 
   return (
     <div style={{
-      position: 'absolute', inset: 0, background: '#0E2A1F', zIndex: 200,
+      position: 'fixed', inset: 0, background: '#0E2A1F', zIndex: 200,
       display: 'flex', flexDirection: 'column',
       animation: 'demoIn 0.3s cubic-bezier(0.2, 0.8, 0.3, 1)',
     }}>
@@ -114,70 +114,12 @@ export function DemoPlayer({ duration, steps, render, title, sub, onClose, accen
         </div>
       </div>
 
-      {/* NEW: Collapsible Details Panel (Scrollable) */}
-      <div style={{ 
-        flex: 1, 
-        background: '#fff', 
-        borderTopLeftRadius: 24, 
-        borderTopRightRadius: 24, 
-        overflowY: 'auto', 
-        padding: '24px 20px 40px',
-        WebkitOverflowScrolling: 'touch'
-      }}>
-        <div style={{ width: 40, height: 4, background: ETL.color.neutral10, borderRadius: 2, margin: '-12px auto 20px' }} />
-        
-        {/* Benefits Section */}
-        <SectionTitle sub="Why this matters">Benefits & Info</SectionTitle>
-        <div style={{ display: 'flex', gap: 10, marginTop: 12, marginBottom: 24 }}>
-          {accent === ETL.color.secondary ? (
-            <>
-              <StatPill label="Calories" value="620 kcal" color="orange" />
-              <StatPill label="Protein" value="38g" color="primary" />
-              <StatPill label="Fiber" value="High" color="primary" />
-            </>
-          ) : (
-            <>
-              <StatPill label="Target" value="Large Muscles" color="primary" />
-              <StatPill label="Burn" value="~150 kcal" color="orange" />
-              <StatPill label="Focus" value="Stability" color="primary" />
-            </>
-          )}
-        </div>
 
-        {/* Ingredients / Steps */}
-        <SectionTitle sub={accent === ETL.color.secondary ? "What you need" : "Key movements"}>
-          {accent === ETL.color.secondary ? "Ingredients" : "Setup & Form"}
-        </SectionTitle>
-        <div style={{ marginTop: 12, marginBottom: 24 }}>
-          {steps.map((s, i) => (
-            <div key={i} style={{ display: 'flex', gap: 12, marginBottom: 12, alignItems: 'flex-start' }}>
-              <div style={{ width: 20, height: 20, borderRadius: 10, background: accent, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>{i + 1}</div>
-              <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral }}>{s.text}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Written Instructions */}
-        <SectionTitle sub="Coach's details">Instructions</SectionTitle>
-        <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral60, lineHeight: 1.6, marginTop: 12, marginBottom: 24 }}>
-          {accent === ETL.color.secondary 
-            ? "Ensure your beans are soaked overnight if using dry ones. The secret to the Rwandan finish is the avocado richness combined with a splash of fresh lime. Always serve warm."
-            : "Keep your core engaged throughout. Avoid arching your back or rushing the eccentric (lowering) phase. Proper form delivers 2x the results of heavy weights with bad form."
-          }
-        </div>
-
-        {/* FAQ Section */}
-        <SectionTitle sub="Common questions">FAQ</SectionTitle>
-        <div style={{ marginTop: 12 }}>
-          <FAQItem q="Can I substitute ingredients?" a="Yes! You can swap beans for lentils or avocado for a drizzle of olive oil depending on your phase goals." />
-          <FAQItem q="What if I feel pain?" a="Stop immediately. Ensure your knees aren't tracking past your toes and that you're breathing out on the exertion phase." />
-        </div>
-      </div>
     </div>
   );
 }
 
-function StatPill({ label, value, color }) {
+export function StatPill({ label, value, color }) {
   const c = color === 'primary' ? ETL.color.primary : ETL.color.secondary;
   const bg = color === 'primary' ? ETL.color.tertiary : '#FCEDDC';
   return (
@@ -188,7 +130,7 @@ function StatPill({ label, value, color }) {
   );
 }
 
-function FAQItem({ q, a }) {
+export function FAQItem({ q, a }) {
   const [open, setOpen] = React.useState(false);
   return (
     <div style={{ borderBottom: `1px solid ${ETL.color.neutral10}`, padding: '12px 0' }}>
