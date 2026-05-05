@@ -88,7 +88,17 @@ export function CommunityScreen({ onNav }) {
       {tab === 'coach' && <CoachInbox />}
 
       <div style={{ height: 80 }} />
-      {composing && <ComposePost onClose={() => setComposing(false)} onPost={(text) => { setPosts(ps => [{ id: Date.now(), who: { name: 'Steffi', loc: 'Kigali', kind: 'user' }, time: 'now', kind: 'milestone', text, cheers: 0, comments: 0 }, ...ps]); setComposing(false); }} />}
+      {composing && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 3000 }}>
+          <ComposePost 
+            onClose={() => setComposing(false)} 
+            onPost={(text) => { 
+              setPosts(ps => [{ id: Date.now(), who: { name: 'Steffi', loc: 'Kigali', kind: 'user' }, time: 'now', kind: 'milestone', text, cheers: 0, comments: 0 }, ...ps]); 
+              setComposing(false); 
+            }} 
+          />
+        </div>
+      )}
     </ScrollPage>
   );
 }
@@ -278,7 +288,7 @@ export function ComposePost({ onClose, onPost }) {
   };
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', alignItems: 'flex-end', animation: 'fadeIn 0.2s', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', alignItems: 'flex-end', animation: 'fadeIn 0.2s', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
       <style>{`@keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes slideUpC{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
       <div style={{ width: '100%', background: ETL.color.surface, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: '20px 20px 36px', animation: 'slideUpC 0.3s cubic-bezier(0.2, 0.8, 0.3, 1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
