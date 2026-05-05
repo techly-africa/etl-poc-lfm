@@ -250,38 +250,61 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
   ];
   return (
     <div style={{
-      position: 'absolute', left: 0, right: 0, bottom: 0,
-      background: 'rgba(255,255,255,0.92)',
-      backdropFilter: 'blur(16px)',
-      WebkitBackdropFilter: 'blur(16px)',
+      position: 'absolute', left: 16, right: 16, bottom: 24,
+      background: 'rgba(255,255,255,0.85)',
+      backdropFilter: 'blur(24px)',
+      WebkitBackdropFilter: 'blur(24px)',
       zIndex: 1000, 
-      borderTop: `1px solid ${ETL.color.neutral10}`,
+      borderRadius: 28,
+      boxShadow: '0 12px 36px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06)',
+      border: '1px solid rgba(255,255,255,0.4)',
+      overflow: 'hidden'
     }}>
-      {/* Imigongo top accent strip */}
-      <ImigongoBand width="100%" height={6} palette="light"/>
+      {/* Subtle top accent */}
+      <div style={{ position: 'absolute', top: 0, left: '20%', right: '20%', height: 2, background: `linear-gradient(90deg, transparent, ${ETL.color.primary}, transparent)`, opacity: 0.4 }} />
+      
       <div style={{
-        padding: '8px 4px calc(env(safe-area-inset-bottom, 0px) + 12px)',
+        padding: '10px 8px',
         display: 'flex',
-        justifyContent: 'space-around',
-        maxWidth: 500, // Keep icons centered on larger screens
+        justifyContent: 'space-between',
+        alignItems: 'center',
         margin: '0 auto'
       }}>
         {tabs.map(tab => {
           const isActive = active === tab.id;
           return (
             <button key={tab.id} onClick={() => onChange(tab.id)} style={{
-              background: isActive ? ETL.color.tertiary : 'transparent',
-              border: isActive ? `1px solid ${ETL.color.tertiaryDeep}` : '1px solid transparent',
-              borderRadius: 14,
+              background: 'transparent',
+              border: 'none',
               cursor: 'pointer',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
-              padding: '7px 10px', minWidth: 52,
-              color: isActive ? ETL.color.primary : ETL.color.neutral60,
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+              padding: '6px 0', 
+              flex: 1,
+              position: 'relative',
+              color: isActive ? ETL.color.primary : ETL.color.neutral40,
               fontFamily: ETL.font.family,
-              transition: 'all 0.2s',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              transform: isActive ? 'scale(1.05)' : 'scale(1)',
             }}>
-              {(Icon as any)[tab.icon](22, 'currentColor', isActive)}
-              <span style={{ fontSize: 9, fontWeight: isActive ? 700 : 500, letterSpacing: 0.2, lineHeight: 1.2 }}>{t(tab.labelKey)}</span>
+              {/* Active Glow/Indicator */}
+              {isActive && (
+                <div style={{ 
+                  position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                  width: 44, height: 44, borderRadius: 14, 
+                  background: ETL.color.tertiary, 
+                  zIndex: -1,
+                  animation: 'navPop 0.3s cubic-bezier(0.17, 0.67, 0.83, 0.67)'
+                }} />
+              )}
+              <style>{`@keyframes navPop { from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }`}</style>
+              
+              {(Icon as any)[tab.icon](isActive ? 22 : 20, 'currentColor', isActive)}
+              <span style={{ 
+                fontSize: 10, 
+                fontWeight: isActive ? 700 : 500, 
+                opacity: isActive ? 1 : 0.8,
+                marginTop: 2
+              }}>{t(tab.labelKey)}</span>
             </button>
           );
         })}
