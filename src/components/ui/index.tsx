@@ -250,11 +250,11 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
   ];
   return (
     <div style={{
-      position: 'fixed', left: 0, right: 0, bottom: 0,
+      position: 'absolute', left: 0, right: 0, bottom: 0,
       background: 'rgba(255,255,255,0.92)',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
-      zIndex: 1000, // High z-index to stay above everything
+      zIndex: 1000, 
       borderTop: `1px solid ${ETL.color.neutral10}`,
     }}>
       {/* Imigongo top accent strip */}
@@ -317,13 +317,16 @@ export function ScreenHeader({ title, sub, action, leading, imigongo = false }: 
 export function ScrollPage({ children, bg = ETL.color.surface }: { children: ReactNode; bg?: string }) {
   return (
     <div style={{ 
+      flex: 1,
       width: '100%', 
-      minHeight: '100vh', 
+      height: '100%', 
       background: bg, 
+      overflowY: 'auto', 
+      overflowX: 'hidden',
       paddingTop: 10, 
-      paddingBottom: 140, // Space for BottomNav + safe area
-      display: 'flex',
-      flexDirection: 'column'
+      paddingBottom: 40, // Reduced since BottomNav is outside now
+      WebkitOverflowScrolling: 'touch',
+      position: 'relative'
     }}>{children}</div>
   );
 }
@@ -396,11 +399,12 @@ export function IOSDevice({ children, isMobile = false }: { children: ReactNode;
     return (
       <div style={{ 
         width: '100%', 
-        minHeight: '100vh', 
+        height: '100%', 
         background: '#fff', 
         position: 'relative',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        overflow: 'hidden' // Trap the viewport
       }}>
         {children}
       </div>

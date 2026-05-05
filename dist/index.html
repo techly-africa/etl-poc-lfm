@@ -11,25 +11,31 @@
     html, body { 
       margin: 0; 
       padding: 0; 
-      background: #1a1a18; 
+      background: #fff; 
       font-family: 'Inter', -apple-system, system-ui, sans-serif; 
-      min-height: 100%;
+      height: 100%;
       width: 100%;
+      overflow: hidden; /* Lock root to prevent body pulling */
     }
-    body {
-      overflow-x: hidden;
+    #root { 
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
-    #root { min-height: 100%; }
     * { box-sizing: border-box; }
     /* Hide scrollbars on inner scrolling regions */
     *::-webkit-scrollbar { width: 0; height: 0; }
     * { scrollbar-width: none; }
     
-    @media (max-width: 768px) {
-      html, body { overflow: auto !important; }
+    /* Prevent rubber-banding on iOS Safari */
+    body {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overscroll-behavior: none;
     }
   </style>
-  <script type="module" crossorigin src="/assets/index-B0LbgY3x.js"></script>
+  <script type="module" crossorigin src="/assets/index-6RaAYp_I.js"></script>
 <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
 <body>
   <div id="root"></div>
