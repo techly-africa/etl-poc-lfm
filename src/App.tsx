@@ -80,6 +80,14 @@ export default function App() {
             <TweakColor label="Secondary" k="secondary" value={tweaks.secondary} setValue={(k, v) => setTweak(k, v)} />
             <TweakToggle label="Use logo lime accent" k="accentLime" value={tweaks.accentLime} setValue={(k, v) => setTweak(k, v)} />
           </TweakSection>
+          <TweakSection title="System">
+            <Btn full kind="secondary" size="sm" icon={Icon.check(14, ETL.color.primary)} onClick={() => window.location.reload()}>
+              Refresh App
+            </Btn>
+            <div style={{ ...tStyle('small'), color: ETL.color.neutral60, marginTop: 8, textAlign: 'center', fontSize: 10 }}>
+              v1.3.1 · Fetches latest builds
+            </div>
+          </TweakSection>
         </TweaksPanel>
       </div>
     </LangProvider>
