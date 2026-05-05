@@ -136,15 +136,13 @@ function Prototype({ tweaks, isMobile }) {
     <div style={{ 
       position: 'relative', 
       width: '100%', 
-      height: isMobile ? '100vh' : '100%', 
+      minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
       background: ETL.color.surface,
-      overflow: 'hidden'
+      paddingBottom: 120,
     }}>
-      <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
-        {screen}
-      </div>
+      {screen}
       {stage === 'app' && <BottomNav active={tab} onChange={setTab} />}
       {workoutOpen && <WorkoutDetail onClose={closeWorkout} onComplete={closeWorkout} />}
     </div>

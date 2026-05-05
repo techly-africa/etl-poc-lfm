@@ -250,7 +250,7 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
   ];
   return (
     <div style={{
-      position: 'absolute', left: 16, right: 16, bottom: 24,
+      position: 'fixed', left: 16, right: 16, bottom: 24,
       background: 'rgba(255,255,255,0.85)',
       backdropFilter: 'blur(24px)',
       WebkitBackdropFilter: 'blur(24px)',
@@ -342,15 +342,10 @@ export function ScrollPage({ children, bg = ETL.color.surface }: { children: Rea
     <div style={{ 
       flex: 1,
       width: '100%', 
-      height: 0, 
       background: bg, 
-      overflowY: 'auto', 
-      overflowX: 'hidden',
       paddingTop: 10, 
       paddingBottom: 120,
-      WebkitOverflowScrolling: 'touch',
       position: 'relative',
-      overscrollBehaviorY: 'contain'
     }}>{children}</div>
   );
 }
