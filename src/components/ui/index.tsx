@@ -342,14 +342,15 @@ export function ScrollPage({ children, bg = ETL.color.surface }: { children: Rea
     <div style={{ 
       flex: 1,
       width: '100%', 
-      height: '100%', 
+      height: 0, 
       background: bg, 
       overflowY: 'auto', 
       overflowX: 'hidden',
       paddingTop: 10, 
-      paddingBottom: 40, // Reduced since BottomNav is outside now
+      paddingBottom: 120,
       WebkitOverflowScrolling: 'touch',
-      position: 'relative'
+      position: 'relative',
+      overscrollBehaviorY: 'contain'
     }}>{children}</div>
   );
 }

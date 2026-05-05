@@ -136,11 +136,11 @@ function Prototype({ tweaks, isMobile }) {
     <div style={{ 
       position: 'relative', 
       width: '100%', 
-      minHeight: isMobile ? '100vh' : '100%', 
+      height: isMobile ? '100vh' : '100%', 
       display: 'flex',
       flexDirection: 'column',
       background: ETL.color.surface,
-      overflow: isMobile ? 'visible' : 'hidden'
+      overflow: 'hidden'
     }}>
       <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
         {screen}
