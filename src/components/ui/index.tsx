@@ -315,15 +315,12 @@ export function ScrollPage({ children, bg = ETL.color.surface }: { children: Rea
   return (
     <div style={{ 
       width: '100%', 
-      height: '100vh', 
+      minHeight: '100vh', 
       background: bg, 
-      overflowY: 'auto', 
-      overflowX: 'hidden',
       paddingTop: 10, 
-      paddingBottom: 120, // Space for BottomNav
-      WebkitOverflowScrolling: 'touch',
-      position: 'absolute',
-      inset: 0,
+      paddingBottom: 140, // Space for BottomNav + safe area
+      display: 'flex',
+      flexDirection: 'column'
     }}>{children}</div>
   );
 }
@@ -393,7 +390,18 @@ export function Pill({ children, color = 'neutral', size = 'md', style = {} }: P
 
 export function IOSDevice({ children, isMobile = false }: { children: ReactNode; isMobile?: boolean }) {
   if (isMobile) {
-    return <div style={{ width: '100%', height: '100%', background: '#fff', overflow: 'hidden', position: 'relative' }}>{children}</div>;
+    return (
+      <div style={{ 
+        width: '100%', 
+        minHeight: '100vh', 
+        background: '#fff', 
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        {children}
+      </div>
+    );
   }
   return (
     <div style={{
@@ -403,6 +411,7 @@ export function IOSDevice({ children, isMobile = false }: { children: ReactNode;
       padding: 12,
       boxShadow: '0 50px 100px rgba(0,0,0,0.5)',
       border: '8px solid #1c1c1e',
+      flexShrink: 0
     }}>
       <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 140, height: 32, background: '#000', borderBottomLeftRadius: 18, borderBottomRightRadius: 18, zIndex: 100 }}>
         <div style={{ position: 'absolute', right: 28, top: 12, width: 6, height: 6, borderRadius: 3, background: '#1c1c1e' }}/>
