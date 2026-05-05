@@ -250,11 +250,12 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
   ];
   return (
     <div style={{
-      position: 'absolute', left: 0, right: 0, bottom: 0,
-      background: 'rgba(255,255,255,0.96)',
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
-      zIndex: 10,
+      position: 'fixed', left: 0, right: 0, bottom: 0,
+      background: 'rgba(255,255,255,0.92)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      zIndex: 1000, // High z-index to stay above everything
+      borderTop: `1px solid ${ETL.color.neutral10}`,
     }}>
       {/* Imigongo top accent strip */}
       <ImigongoBand width="100%" height={6} palette="light"/>
@@ -262,6 +263,8 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
         padding: '8px 4px calc(env(safe-area-inset-bottom, 0px) + 12px)',
         display: 'flex',
         justifyContent: 'space-around',
+        maxWidth: 500, // Keep icons centered on larger screens
+        margin: '0 auto'
       }}>
         {tabs.map(tab => {
           const isActive = active === tab.id;
