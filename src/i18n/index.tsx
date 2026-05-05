@@ -12,7 +12,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'nav.home': 'Today',
     'nav.move': 'Move',
     'nav.nourish': 'Nourish',
-    'nav.community': 'Family',
+    'nav.community': 'Community',
     'nav.me': 'Me',
 
     // Locations
@@ -179,11 +179,11 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'progress.rewards.sub': 'Earned this phase',
 
     // Community
-    'community.sub': '🇷🇼 Umuryango · ETL Family',
-    'community.title': 'Family',
+    'community.sub': '🇷🇼 Umuryango · ETL Community',
+    'community.title': 'Community',
     'community.proverb.rw': 'Umuntu ni umuntu kubw\'abantu',
     'community.proverb.en': 'A person is a person through other people',
-    'community.compose': 'Sangira n\'umuryango · share your win, meal, or lesson with the family…',
+    'community.compose': 'Sangira n\'umuryango · share your win, meal, or lesson with the community…',
     'community.tab.feed': 'Feed',
     'community.tab.coach': 'My Coach',
 
@@ -346,7 +346,7 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
     'community.title': 'Communauté',
     'community.proverb.rw': 'Umuntu ni umuntu kubw\'abantu',
     'community.proverb.en': 'L\'être humain existe grâce aux autres',
-    'community.compose': 'Partagez avec la famille ETL — votre victoire, repas ou leçon du jour…',
+    'community.compose': 'Partagez avec la communauté ETL — votre victoire, repas ou leçon du jour…',
     'community.tab.feed': 'Fil d\'actualité',
     'community.tab.coach': 'Mon Coach',
 
@@ -506,10 +506,10 @@ export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
 
     // Community
     'community.sub': '🇷🇼 Umuryango wawe wa ETL',
-    'community.title': 'Umuryango',
+    'community.title': 'Community',
     'community.proverb.rw': 'Umuntu ni umuntu kubw\'abantu',
     'community.proverb.en': 'Umuntu ni umuntu kubw\'abantu',
-    'community.compose': 'Sangira umuryango wawe — intsinzi, ifunguro, cyangwa isomo ry\'uyu munsi…',
+    'community.compose': 'Sangira n\'umuryango wawe — intsinzi, ifunguro, cyangwa isomo ry\'uyu munsi…',
     'community.tab.feed': 'Amakuru',
     'community.tab.coach': 'Umukurikiranira wanjye',
 
