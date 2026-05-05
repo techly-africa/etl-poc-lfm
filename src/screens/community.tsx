@@ -263,22 +263,67 @@ export function CoachThread({ coach, onBack }) {
 export function ComposePost({ onClose, onPost }) {
   const [text, setText] = React.useState('');
   const [tag, setTag] = React.useState('milestone');
+  const [media, setMedia] = React.useState<string | null>(null);
+  const [mediaType, setMediaType] = React.useState<'image' | 'video' | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const cameraInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleMedia = (e: React.ChangeEvent<HTMLInputElement>, isCamera = false) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setMedia(url);
+      setMediaType(file.type.startsWith('video') ? 'video' : 'image');
+    }
+  };
+
   return (
-    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 90, display: 'flex', alignItems: 'flex-end', animation: 'fadeIn 0.2s' }}>
+    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', alignItems: 'flex-end', animation: 'fadeIn 0.2s', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
       <style>{`@keyframes fadeIn{from{opacity:0}to{opacity:1}} @keyframes slideUpC{from{transform:translateY(100%)}to{transform:translateY(0)}}`}</style>
       <div style={{ width: '100%', background: ETL.color.surface, borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: '20px 20px 36px', animation: 'slideUpC 0.3s cubic-bezier(0.2, 0.8, 0.3, 1)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
           <div style={{ ...tStyle('h3'), color: ETL.color.neutral }}>Share with Umuryango</div>
           <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 16, background: '#fff', border: 'none', cursor: 'pointer', boxShadow: ETL.shadow.sm }}>×</button>
         </div>
-        <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+        
+        {/* Tag selection */}
+        <div style={{ display: 'flex', gap: 6, marginBottom: 12, overflowX: 'auto', paddingBottom: 4 }}>
           {[{ id: 'milestone', l: '🏅 Milestone' }, { id: 'workout', l: '💪 Workout' }, { id: 'meal', l: '🍲 Meal' }, { id: 'question', l: '❓ Question' }].map(t => (
             <Chip key={t.id} active={tag === t.id} onClick={() => setTag(t.id)} size="sm">{t.l}</Chip>
           ))}
         </div>
+
+        {/* Text area */}
         <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Sangira umuryango · share your win, meal, or lesson with the family…"
           style={{ width: '100%', minHeight: 100, padding: 14, background: '#fff', borderRadius: 12, border: `1.5px solid ${ETL.color.neutral20}`, fontFamily: ETL.font.family, fontSize: 14, color: ETL.color.neutral, outline: 'none', boxSizing: 'border-box', resize: 'none', lineHeight: 1.5 }} />
-        <div style={{ ...tStyle('small'), color: ETL.color.neutral60, marginTop: 8, marginBottom: 14 }}>
+        
+        {/* Media Preview */}
+        {media && (
+          <div style={{ position: 'relative', marginTop: 12, borderRadius: 12, overflow: 'hidden', background: '#000', height: 200 }}>
+            {mediaType === 'video' ? (
+              <video src={media} controls style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            ) : (
+              <img src={media} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            )}
+            <button onClick={() => setMedia(null)} style={{ position: 'absolute', top: 8, right: 8, width: 28, height: 28, borderRadius: 14, background: 'rgba(0,0,0,0.6)', color: '#fff', border: 'none', fontSize: 18 }}>×</button>
+          </div>
+        )}
+
+        {/* Media Actions */}
+        <div style={{ display: 'flex', gap: 10, marginTop: 14, marginBottom: 14 }}>
+          <Btn kind="outlined" size="sm" icon={Icon.walk(16, ETL.color.primary)} onClick={() => cameraInputRef.current?.click()}>
+            Take Photo
+          </Btn>
+          <Btn kind="outlined" size="sm" icon={Icon.plus(16, ETL.color.primary)} onClick={() => fileInputRef.current?.click()}>
+            Upload Media
+          </Btn>
+        </div>
+
+        {/* Hidden inputs */}
+        <input type="file" ref={cameraInputRef} accept="image/*,video/*" capture="environment" style={{ display: 'none' }} onChange={handleMedia} />
+        <input type="file" ref={fileInputRef} accept="image/*,video/*" style={{ display: 'none' }} onChange={handleMedia} />
+
+        <div style={{ ...tStyle('small'), color: ETL.color.neutral60, marginBottom: 14 }}>
           🌿 Visible to your coaches and your ETL community.
         </div>
         <Btn full kind="primary" size="lg" onClick={() => onPost(text || 'Just finished today\'s session — feeling good 💪')}>Post to Umuryango</Btn>
