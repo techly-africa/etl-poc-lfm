@@ -95,7 +95,7 @@ export function DemoPlayer({ duration, steps, render, title, sub, onClose, accen
       )}
 
       {/* Controls */}
-      <div style={{ padding: '8px 20px 36px', position: 'relative', zIndex: 2 }}>
+      <div style={{ padding: '8px 20px 24px', position: 'relative', zIndex: 2 }}>
         <Scrubber t={t} duration={duration} steps={steps} onSeek={seek} accent={accent}/>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
           <span style={{ ...tStyle('small'), color: 'rgba(255,255,255,0.7)', fontVariantNumeric: 'tabular-nums' }}>{fmtTime(t)}</span>
@@ -113,6 +113,99 @@ export function DemoPlayer({ duration, steps, render, title, sub, onClose, accen
           <span style={{ ...tStyle('small'), color: 'rgba(255,255,255,0.7)', fontVariantNumeric: 'tabular-nums' }}>{fmtTime(duration)}</span>
         </div>
       </div>
+
+      {/* NEW: Collapsible Details Panel (Scrollable) */}
+      <div style={{ 
+        flex: 1, 
+        background: '#fff', 
+        borderTopLeftRadius: 24, 
+        borderTopRightRadius: 24, 
+        overflowY: 'auto', 
+        padding: '24px 20px 40px',
+        WebkitOverflowScrolling: 'touch'
+      }}>
+        <div style={{ width: 40, height: 4, background: ETL.color.neutral10, borderRadius: 2, margin: '-12px auto 20px' }} />
+        
+        {/* Benefits Section */}
+        <SectionTitle sub="Why this matters">Benefits & Info</SectionTitle>
+        <div style={{ display: 'flex', gap: 10, marginTop: 12, marginBottom: 24 }}>
+          {accent === ETL.color.secondary ? (
+            <>
+              <StatPill label="Calories" value="620 kcal" color="orange" />
+              <StatPill label="Protein" value="38g" color="primary" />
+              <StatPill label="Fiber" value="High" color="primary" />
+            </>
+          ) : (
+            <>
+              <StatPill label="Target" value="Large Muscles" color="primary" />
+              <StatPill label="Burn" value="~150 kcal" color="orange" />
+              <StatPill label="Focus" value="Stability" color="primary" />
+            </>
+          )}
+        </div>
+
+        {/* Ingredients / Steps */}
+        <SectionTitle sub={accent === ETL.color.secondary ? "What you need" : "Key movements"}>
+          {accent === ETL.color.secondary ? "Ingredients" : "Setup & Form"}
+        </SectionTitle>
+        <div style={{ marginTop: 12, marginBottom: 24 }}>
+          {steps.map((s, i) => (
+            <div key={i} style={{ display: 'flex', gap: 12, marginBottom: 12, alignItems: 'flex-start' }}>
+              <div style={{ width: 20, height: 20, borderRadius: 10, background: accent, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>{i + 1}</div>
+              <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral }}>{s.text}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Written Instructions */}
+        <SectionTitle sub="Coach's details">Instructions</SectionTitle>
+        <div style={{ ...tStyle('body'), fontSize: 14, color: ETL.color.neutral60, lineHeight: 1.6, marginTop: 12, marginBottom: 24 }}>
+          {accent === ETL.color.secondary 
+            ? "Ensure your beans are soaked overnight if using dry ones. The secret to the Rwandan finish is the avocado richness combined with a splash of fresh lime. Always serve warm."
+            : "Keep your core engaged throughout. Avoid arching your back or rushing the eccentric (lowering) phase. Proper form delivers 2x the results of heavy weights with bad form."
+          }
+        </div>
+
+        {/* FAQ Section */}
+        <SectionTitle sub="Common questions">FAQ</SectionTitle>
+        <div style={{ marginTop: 12 }}>
+          <FAQItem q="Can I substitute ingredients?" a="Yes! You can swap beans for lentils or avocado for a drizzle of olive oil depending on your phase goals." />
+          <FAQItem q="What if I feel pain?" a="Stop immediately. Ensure your knees aren't tracking past your toes and that you're breathing out on the exertion phase." />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatPill({ label, value, color }) {
+  const c = color === 'primary' ? ETL.color.primary : ETL.color.secondary;
+  const bg = color === 'primary' ? ETL.color.tertiary : '#FCEDDC';
+  return (
+    <div style={{ flex: 1, padding: '10px', background: bg, borderRadius: 12, textAlign: 'center' }}>
+      <div style={{ ...tStyle('overline'), color: c, fontSize: 9 }}>{label}</div>
+      <div style={{ ...tStyle('h4'), color: c, fontSize: 14 }}>{value}</div>
+    </div>
+  );
+}
+
+function FAQItem({ q, a }) {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div style={{ borderBottom: `1px solid ${ETL.color.neutral10}`, padding: '12px 0' }}>
+      <button onClick={() => setOpen(!open)} style={{ width: '100%', background: 'none', border: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
+        <span style={{ ...tStyle('h4'), fontSize: 14, color: ETL.color.neutral }}>{q}</span>
+        <span style={{ color: ETL.color.neutral40 }}>{open ? '−' : '+'}</span>
+      </button>
+      {open && <div style={{ ...tStyle('small'), color: ETL.color.neutral60, marginTop: 8, lineHeight: 1.4 }}>{a}</div>}
+    </div>
+  );
+}
+
+function SectionTitle({ children, sub }) {
+  return (
+    <div style={{ marginBottom: 4 }}>
+      {sub && <div style={{ ...tStyle('overline'), color: ETL.color.primary, textTransform: 'uppercase', marginBottom: 2 }}>{sub}</div>}
+      <div style={{ ...tStyle('h3'), color: ETL.color.neutral }}>{children}</div>
     </div>
   );
 }
