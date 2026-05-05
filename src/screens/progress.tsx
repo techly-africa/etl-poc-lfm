@@ -7,7 +7,7 @@ import { ScreenHeader, ScrollPage, SectionTitle, Card, Btn, ProgressBar, Pill } 
 
 // Me screen — progress + profile + metrics.
 
-export function MeScreen({ user }) {
+export function MeScreen({ user, onNav }) {
   const t = useT();
   const [booking, setBooking] = React.useState(null);
   const [booked, setBooked] = React.useState(false);
@@ -34,6 +34,16 @@ export function MeScreen({ user }) {
               <Pill color="primary" size="sm">Phase 1</Pill>
               <Pill color="orange" size="sm">Premium</Pill>
             </div>
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            <button onClick={() => onNav('notifications')} style={{
+              width: 44, height: 44, borderRadius: 22, background: '#fff', border: 'none',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+              position: 'relative', boxShadow: ETL.shadow.sm
+            }}>
+              {Icon.bell(24, ETL.color.neutral, false)}
+              <div style={{ position: 'absolute', top: 12, right: 12, width: 8, height: 8, borderRadius: 4, background: ETL.color.secondary, border: '2px solid #fff' }}/>
+            </button>
           </div>
         </div>
       </div>

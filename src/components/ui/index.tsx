@@ -257,9 +257,9 @@ export function BottomNav({ active, onChange }: BottomNavProps) {
       zIndex: 10,
     }}>
       {/* Imigongo top accent strip */}
-      <ImigongoBand width={390} height={6} palette="light"/>
+      <ImigongoBand width="100%" height={6} palette="light"/>
       <div style={{
-        padding: '8px 4px 28px',
+        padding: '8px 4px calc(env(safe-area-inset-bottom, 0px) + 12px)',
         display: 'flex',
         justifyContent: 'space-around',
       }}>
@@ -298,7 +298,7 @@ interface ScreenHeaderProps {
 export function ScreenHeader({ title, sub, action, leading, imigongo = false }: ScreenHeaderProps) {
   return (
     <div>
-      {imigongo && <ImigongoBand width={390} height={8} palette="light"/>}
+      {imigongo && <ImigongoBand width="100%" height={8} palette="light"/>}
       <div style={{ padding: '12px 20px 16px', display: 'flex', alignItems: 'flex-start', gap: 12 }}>
         {leading}
         <div style={{ flex: 1 }}>
@@ -322,6 +322,45 @@ export function ScrollPage({ children, bg = ETL.color.surface }: { children: Rea
       paddingBottom: 100, // Space for BottomNav
       WebkitOverflowScrolling: 'touch' // Smooth scroll for iOS
     }}>{children}</div>
+  );
+}
+
+export function NotificationDrawer({ onBack }: { onBack: () => void }) {
+  const notifications = [
+    { id: 1, title: 'Session confirmed', body: 'Your meeting with Coach Aline is set for Thursday at 14:00.', time: '2h ago', icon: 'check', kind: 'primary' },
+    { id: 2, title: 'Agaseke Reward!', body: 'You earned a new reward for your 7-day streak. Open it now!', time: '5h ago', icon: 'sparkle', kind: 'secondary' },
+    { id: 3, title: 'Form Feedback', body: 'Aline U. left a note on your Squats. Quality over quantity!', time: '1d ago', icon: 'dumbbell', kind: 'primary' },
+  ];
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, background: ETL.color.surface, zIndex: 150, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: 'max(60px, env(safe-area-inset-top, 0px) + 20px) 20px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <button onClick={onBack} style={{ width: 40, height: 40, borderRadius: 20, background: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: ETL.shadow.sm }}>
+          {(Icon as any).chevL(18, ETL.color.neutral, false)}
+        </button>
+        <div style={{ flex: 1 }}>
+          <div style={{ ...tStyle('h2'), fontSize: 20 }}>Notifications</div>
+        </div>
+      </div>
+      <div style={{ flex: 1, padding: '0 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {notifications.map(n => (
+          <Card key={n.id} padding={14} elev="sm">
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: n.kind === 'primary' ? ETL.color.tertiary : '#FCEDDC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {(Icon as any)[n.icon](18, n.kind === 'primary' ? ETL.color.primary : ETL.color.secondary, false)}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                  <div style={{ ...tStyle('h4'), fontSize: 14 }}>{n.title}</div>
+                  <div style={{ ...tStyle('small'), color: ETL.color.neutral40 }}>{n.time}</div>
+                </div>
+                <div style={{ ...tStyle('small'), color: ETL.color.neutral60, lineHeight: 1.4 }}>{n.body}</div>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -349,10 +388,13 @@ export function Pill({ children, color = 'neutral', size = 'md', style = {} }: P
   );
 }
 
-export function IOSDevice({ children, width = 390, height = 844 }: { children: ReactNode; width?: number; height?: number }) {
+export function IOSDevice({ children, isMobile = false }: { children: ReactNode; isMobile?: boolean }) {
+  if (isMobile) {
+    return <div style={{ width: '100%', height: '100%', background: '#fff', overflow: 'hidden', position: 'relative' }}>{children}</div>;
+  }
   return (
     <div style={{
-      width, height, position: 'relative',
+      width: 390, height: 844, position: 'relative',
       borderRadius: 44,
       background: '#000',
       padding: 12,

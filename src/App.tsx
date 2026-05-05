@@ -16,6 +16,7 @@ import { MoveScreen, WorkoutDetail } from './screens/move';
 import { NourishScreen } from './screens/nourish';
 import { CommunityScreen } from './screens/community';
 import { MeScreen } from './screens/progress';
+import { StepWelcome, StepIdentity, StepStats, StepPlan } from './screens/onboarding';
 
 // Top-level App — manages screens, onboarding, transitions.
 
@@ -30,6 +31,13 @@ const TWEAKS = /*EDITMODE-BEGIN*/{
 
 export default function App() {
   const [tweaks, setTweak] = useTweaks(TWEAKS);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Apply primary/secondary token override at runtime
   React.useEffect(() => {
@@ -41,15 +49,16 @@ export default function App() {
     <LangProvider>
       <div style={{
         width: '100vw', minHeight: '100vh',
-        background: '#1a1a18',
+        background: isMobile ? ETL.color.surface : '#1a1a18',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '40px 20px',
+        padding: isMobile ? 0 : '40px 20px',
         fontFamily: ETL.font.family,
         boxSizing: 'border-box',
         flexDirection: 'column',
         gap: 20,
+        overflow: 'hidden'
       }}>
-        {tweaks.view === 'prototype' && <Prototype tweaks={tweaks} />}
+        {tweaks.view === 'prototype' && <Prototype tweaks={tweaks} isMobile={isMobile} />}
         {tweaks.view === 'system' && <SystemPanel />}
         {tweaks.view === 'all' && <AllScreens />}
 
@@ -77,7 +86,7 @@ export default function App() {
 // ─────────────────────────────────────────────────────────────
 // Prototype — single-device interactive app
 // ─────────────────────────────────────────────────────────────
-function Prototype({ tweaks }) {
+function Prototype({ tweaks, isMobile }) {
   const [stage, setStage] = React.useState(tweaks.skipOnboarding ? 'app' : 'onboarding');
   const [tab, setTab] = React.useState('home');
   const [user, setUser] = React.useState({
@@ -108,25 +117,21 @@ function Prototype({ tweaks }) {
     if (tab === 'move') return <MoveScreen onStartWorkout={startWorkout} />;
     if (tab === 'nourish') return <NourishScreen onNav={setTab} />;
     if (tab === 'community') return <CommunityScreen onNav={setTab} />;
-    if (tab === 'me') return <MeScreen user={user} />;
+    if (tab === 'me') return <MeScreen user={user} onNav={setTab} />;
     if (tab === 'notifications') return <NotificationDrawer onBack={() => setTab('home')} />;
   })();
 
   const inner = (
-    <>
+    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: ETL.color.surface }}>
       {screen}
       {stage === 'app' && <BottomNav active={tab} onChange={setTab} />}
       {workoutOpen && <WorkoutDetail onClose={closeWorkout} onComplete={closeWorkout} />}
-    </>
+    </div>
   );
 
-  if (!tweaks.showDeviceFrame) {
-    return <div style={{ width: 390, height: 844, position: 'relative', borderRadius: 32, overflow: 'hidden', boxShadow: '0 40px 80px rgba(0,0,0,0.4)', background: ETL.color.surface }}>{inner}</div>;
-  }
-
   return (
-    <IOSDevice width={390} height={844}>
-      <div style={{ position: 'absolute', inset: 0 }}>{inner}</div>
+    <IOSDevice isMobile={isMobile || !tweaks.showDeviceFrame}>
+      {inner}
     </IOSDevice>
   );
 }
@@ -150,14 +155,15 @@ function TransitionScreen() {
 // ─────────────────────────────────────────────────────────────
 function AllScreens() {
   const screens = [
-    { label: '01 · Onboarding', el: <OnboardingPreview step={0} /> },
-    { label: '02 · Profile setup', el: <OnboardingPreview step={1} /> },
-    { label: '03 · Plan ready', el: <OnboardingPreview step={2} /> },
-    { label: '04 · Today (Home)', el: <HomeScreen user={{ name: 'Steffi' }} onNav={() => { }} onStartWorkout={() => { }} />, nav: 'home' },
-    { label: '05 · Move', el: <MoveScreen onStartWorkout={() => { }} />, nav: 'move' },
-    { label: '06 · Nourish', el: <NourishScreen onNav={() => { }} />, nav: 'nourish' },
-    { label: '07 · Community', el: <CommunityScreen onNav={() => { }} />, nav: 'community' },
-    { label: '08 · Progress', el: <MeScreen user={{ name: 'Steffi', city: 'Kigali', age: 28, weight: 77, height: 168, health: 'Good', diet: 'Plant-based' }} />, nav: 'me' },
+    { label: '01 · Welcome', el: <StepWelcome /> },
+    { label: '02 · Identity', el: <StepIdentity data={{ name: '' }} update={() => { }} /> },
+    { label: '03 · Stats', el: <StepStats data={{ age: 28, sex: 'female', height: 168, weight: 77 }} update={() => { }} /> },
+    { label: '04 · Plan ready', el: <StepPlan data={{ name: 'Steffi', coach: 'aline' }} /> },
+    { label: '05 · Today (Home)', el: <HomeScreen user={{ name: 'Steffi' }} onNav={() => { }} onStartWorkout={() => { }} />, nav: 'home' },
+    { label: '06 · Move', el: <MoveScreen onStartWorkout={() => { }} />, nav: 'move' },
+    { label: '07 · Nourish', el: <NourishScreen onNav={() => { }} />, nav: 'nourish' },
+    { label: '08 · Community', el: <CommunityScreen onNav={() => { }} />, nav: 'community' },
+    { label: '09 · Progress', el: <MeScreen user={{ name: 'Steffi', city: 'Kigali', age: 28, weight: 77, height: 168, health: 'Good', diet: 'Plant-based' }} />, nav: 'me' },
   ];
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, justifyContent: 'center', padding: '0 20px' }}>
@@ -174,13 +180,6 @@ function AllScreens() {
   );
 }
 
-function OnboardingPreview({ step }) {
-  // Mock components for preview if they were in App.jsx scope before. 
-  // In a real refactor we might import them, but here we can just use the components.
-  // Wait, Step1, Step2, Step3 are inside screens-onboarding.jsx but not exported.
-  // I should export them.
-  return <div style={{ padding: 40, color: ETL.color.neutral }}>Preview Step {step}</div>;
-}
 
 // ─────────────────────────────────────────────────────────────
 // Design System panel
@@ -303,44 +302,5 @@ function TypeRow({ size, weight, label, upper }) {
   );
 }
 
-function NotificationDrawer({ onBack }) {
-  const t = useT();
-  const notifications = [
-    { id: 1, title: 'Session confirmed', body: 'Your meeting with Coach Aline is set for Thursday at 14:00.', time: '2h ago', icon: 'check', kind: 'primary' },
-    { id: 2, title: 'Agaseke Reward!', body: 'You earned a new reward for your 7-day streak. Open it now!', time: '5h ago', icon: 'sparkle', kind: 'secondary' },
-    { id: 3, title: 'Form Feedback', body: 'Aline U. left a note on your Squats. Quality over quantity!', time: '1d ago', icon: 'dumbbell', kind: 'primary' },
-  ];
-
-  return (
-    <div style={{ position: 'absolute', inset: 0, background: ETL.color.surface, zIndex: 150, display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '60px 20px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <button onClick={onBack} style={{ width: 40, height: 40, borderRadius: 20, background: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: ETL.shadow.sm }}>
-          {Icon.chevL(18, ETL.color.neutral, false)}
-        </button>
-        <div style={{ flex: 1 }}>
-          <div style={{ ...tStyle('h2'), fontSize: 20 }}>Notifications</div>
-        </div>
-      </div>
-      <div style={{ flex: 1, padding: '0 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {notifications.map(n => (
-          <Card key={n.id} padding={14} elev="sm">
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, background: n.kind === 'primary' ? ETL.color.tertiary : '#FCEDDC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                {(Icon as any)[n.icon](18, n.kind === 'primary' ? ETL.color.primary : ETL.color.secondary, false)}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-                  <div style={{ ...tStyle('h4'), fontSize: 14 }}>{n.title}</div>
-                  <div style={{ ...tStyle('small'), color: ETL.color.neutral40 }}>{n.time}</div>
-                </div>
-                <div style={{ ...tStyle('small'), color: ETL.color.neutral60, lineHeight: 1.4 }}>{n.body}</div>
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 // End of file

@@ -111,7 +111,7 @@ export function Onboarding({ onComplete }) {
 }
 
 // Step 0 — Language Selection
-function StepLanguage({ onNext }) {
+export function StepLanguage({ onNext }) {
   const { lang, setLang } = React.useContext(LangContext);
   const langs = [
     { id: 'en', label: 'English', sub: 'Welcome' },
@@ -149,7 +149,7 @@ function StepLanguage({ onNext }) {
 }
 
 // Step 1 — Muraho welcome
-function StepWelcome() {
+export function StepWelcome() {
   const [playing, setPlaying] = React.useState(false);
   const videoRef = React.useRef(null);
 
@@ -247,7 +247,7 @@ function StepWelcome() {
 }
 
 // Step 1 — Identity
-function StepIdentity({ data, update }) {
+export function StepIdentity({ data, update }) {
   return (
     <div style={{ padding: '24px 24px 20px' }}>
       <div style={{ ...tStyle('h1'), color: ETL.color.neutral, marginBottom: 10, fontSize: 32, lineHeight: 1.1 }}>What should we call you?</div>
@@ -276,7 +276,7 @@ function StepIdentity({ data, update }) {
 }
 
 // Step 2 — Stats
-function StepStats({ data, update }) {
+export function StepStats({ data, update }) {
   return (
     <div style={{ padding: '24px 24px 20px' }}>
       <div style={{ ...tStyle('h1'), color: ETL.color.neutral, marginBottom: 10, fontSize: 32, lineHeight: 1.1 }}>Your body right now</div>
@@ -318,7 +318,7 @@ function StepStats({ data, update }) {
 }
 
 // Step 4 — Pillar 2: Health
-function StepHealth({ data, update }) {
+export function StepHealth({ data, update }) {
   return (
     <div style={{ padding: '24px 24px 20px' }}>
       <div style={{ ...tStyle('h1'), color: ETL.color.neutral, marginBottom: 10, fontSize: 32, lineHeight: 1.1 }}>Health & Wellness</div>
@@ -359,7 +359,7 @@ const textAreaStyle = {
 };
 
 // Step 3 — Focus
-function StepGoals({ data, update }) {
+export function StepGoals({ data, update }) {
   const goals = [
     { id: 'lose',     label: 'Feel lighter',         rw: 'Gutungana',     sub: 'Sustainable fat loss' },
     { id: 'strong',   label: 'Build strength',       rw: 'Gukomera',      sub: 'Lift, push, carry' },
@@ -414,7 +414,7 @@ function StepGoals({ data, update }) {
 }
 
 // Step 4 — Activity
-function StepActivity({ data, update }) {
+export function StepActivity({ data, update }) {
   const activities = ['Mostly seated', 'Light walking', 'On my feet daily', 'Active job', 'Athlete'];
   return (
     <div style={{ padding: '24px 24px 20px' }}>
@@ -438,7 +438,7 @@ function StepActivity({ data, update }) {
 }
 
 // Step 5 — Eating Lifestyle
-function StepEatingLifestyle({ data, update }) {
+export function StepEatingLifestyle({ data, update }) {
   const diets = ['Omnivore', 'Vegetarian', 'Vegan', 'Pescatarian'];
   const cooking = ['Cook at home', 'Mix of both', 'Eat out'];
   const fasting = ['Open to it', 'Already do', 'Not for me'];
@@ -475,7 +475,7 @@ function StepEatingLifestyle({ data, update }) {
 }
 
 // Step 6 — Eating Foods
-function StepEatingFoods({ data, update }) {
+export function StepEatingFoods({ data, update }) {
   const rwandanFoods = ['Ibishyimbo','Ubugali','Ibirayi','Igitoke','Isombe','Amata','Amagi'];
   const otherFoods = ['Rice','Meat','Fish','Tofu','Avocado','Vegetables','Fruit','Nuts'];
   const toggle = (f) => {
@@ -505,7 +505,7 @@ function StepEatingFoods({ data, update }) {
 }
 
 // Step 7 — Coach
-function StepCoach({ data, update }) {
+export function StepCoach({ data, update }) {
   const coaches = [
     { id: 'aline',    name: 'Aline U.',   role: 'Lead coach',    spec: 'Beginner-friendly · Strength', tag: 'Recommended', kind: 'fitness',   loc: 'Kigali · Kicukiro' },
     { id: 'patrick',  name: 'Patrick M.', role: 'Fitness coach', spec: 'Hybrid · Hill running',        tag: '',            kind: 'fitness',   loc: 'Kigali · Nyamirambo' },
@@ -565,7 +565,7 @@ function StepCoach({ data, update }) {
 }
 
 // Step 5 — Plan ready (the warm handoff)
-function StepPlan({ data }) {
+export function StepPlan({ data }) {
   const t = useT();
   const coachName = { aline: 'Aline', patrick: 'Patrick', jeanne: 'Jeanne' }[data.coach] || 'your coach';
   return (
@@ -606,8 +606,8 @@ function StepPlan({ data }) {
         <div style={{ marginTop: 14, padding: 14, background: '#fff', borderRadius: ETL.radius.md, border: `1px solid ${ETL.color.neutral10}`, display: 'flex', alignItems: 'center', gap: 12 }}>
           <CoachAvatar size={44} kind="fitness"/>
           <div style={{ flex: 1 }}>
-            <div style={{ ...tStyle('small'), color: ETL.color.neutral60 }}>{coachName} will message you on</div>
-            <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14 }}>WhatsApp + in-app · today</div>
+            <div style={{ ...tStyle('small'), color: ETL.color.neutral60 }}>{coachName} will message you</div>
+            <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14 }}>In-app · today</div>
             <div style={{ ...tStyle('overline'), color: ETL.color.secondary, marginTop: 4, fontStyle: 'italic' }}>{t('onboard.plan.signoff')}</div>
           </div>
           <div style={{ width: 8, height: 8, borderRadius: 4, background: '#34C759', boxShadow: '0 0 0 4px rgba(52,199,89,0.2)' }}/>
