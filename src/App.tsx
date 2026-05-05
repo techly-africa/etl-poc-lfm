@@ -7,7 +7,7 @@ import { ImigongoCorner } from './components/art/rw';
 import { useTweaks, TweaksPanel, TweakSection, TweakToggle, TweakColor, TweakRadio } from './components/tweaks/index';
 import {
   IOSDevice, ScreenHeader, BottomNav, ProgressBar,
-  ArcProgress, MacroRing, ProgressDots, Btn, Chip, Pill, Card
+  ArcProgress, MacroRing, ProgressDots, Btn, Chip, Pill, Card, NotificationDrawer
 } from './components/ui/index';
 
 import { Onboarding } from './screens/onboarding';
@@ -59,7 +59,7 @@ export default function App() {
         boxSizing: 'border-box',
         flexDirection: 'column',
         gap: 20,
-        overflowX: 'hidden'
+        overflow: isMobile ? 'visible' : 'hidden'
       }}>
         {tweaks.view === 'prototype' && <Prototype tweaks={tweaks} isMobile={isMobile} />}
         {tweaks.view === 'system' && <SystemPanel />}
@@ -131,9 +131,10 @@ function Prototype({ tweaks, isMobile }) {
       minHeight: isMobile ? '100vh' : '100%', 
       display: 'flex',
       flexDirection: 'column',
-      background: ETL.color.surface 
+      background: ETL.color.surface,
+      overflow: isMobile ? 'visible' : 'hidden'
     }}>
-      <div style={{ flex: 1, position: 'relative' }}>
+      <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
         {screen}
       </div>
       {stage === 'app' && <BottomNav active={tab} onChange={setTab} />}
