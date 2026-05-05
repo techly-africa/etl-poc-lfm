@@ -6,8 +6,7 @@ import { KinyarwandaProverb, CoachAvatar } from '../components/art/rw';
 import { ImigongoDivider } from '../components/gamify/index';
 import { ScreenHeader, ScrollPage, Card, Btn, Chip } from '../components/ui/index';
 
-// Community + Coach Feedback screen — Umuryango ("family/community" in Kinyarwanda)
-
+// Community + Coach Feedback screen — Umuryango ("family" in Kinyarwanda)
 export function CommunityScreen({ onNav }) {
   const t = useT();
   const [tab, setTab] = React.useState('feed'); // feed | coach
@@ -42,7 +41,7 @@ export function CommunityScreen({ onNav }) {
 
   return (
     <ScrollPage>
-      <ScreenHeader sub={t('community.sub')} title={t('community.title')} imigongo={true}/>
+      <ScreenHeader sub={t('community.sub')} title={t('community.title')} imigongo={true} />
       {/* Community proverb */}
       <div style={{ padding: '0 20px 14px' }}>
         <KinyarwandaProverb
@@ -66,30 +65,30 @@ export function CommunityScreen({ onNav }) {
                 <div style={{ width: 36, height: 36, borderRadius: 18, background: ETL.color.tertiary, display: 'flex', alignItems: 'center', justifyContent: 'center', color: ETL.color.primary, fontWeight: 700 }}>S</div>
                 <div style={{ flex: 1, ...tStyle('small'), color: ETL.color.neutral60 }}>{t('community.compose')}</div>
                 <div style={{ width: 36, height: 36, borderRadius: 18, background: ETL.color.primary, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {Icon.plus(16, '#fff')}
+                  {Icon.plus(16, '#fff', false)}
                 </div>
               </div>
               <div style={{ display: 'flex', borderTop: `1px solid ${ETL.color.neutral10}` }}>
-                <ComposeChip icon={Icon.dumbbell(14, ETL.color.primary)} label="Workout"/>
-                <ComposeChip icon={Icon.bowl(14, ETL.color.secondary)} label="Meal"/>
-                <ComposeChip icon={Icon.trophy(14, '#B86E20')} label="Milestone"/>
+                <ComposeChip icon={Icon.dumbbell(14, ETL.color.primary, false)} label="Workout" />
+                <ComposeChip icon={Icon.bowl(14, ETL.color.secondary, false)} label="Meal" />
+                <ComposeChip icon={Icon.trophy(14, '#B86E20', false)} label="Milestone" />
               </div>
             </Card>
           </div>
 
-          <ImigongoDivider palette="light" height={8}/>
+          <ImigongoDivider palette="light" height={8} />
 
           {/* Posts */}
           <div style={{ padding: '12px 20px 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {posts.map(p => <PostCard key={p.id} post={p} onCheer={() => setPosts(ps => ps.map(x => x.id === p.id ? { ...x, cheers: x.cheers + 1, cheered: true } : x))}/>)}
+            {posts.map(p => <PostCard key={p.id} post={p} onCheer={() => setPosts(ps => ps.map(x => x.id === p.id ? { ...x, cheers: x.cheers + 1, cheered: true } : x))} />)}
           </div>
         </>
       )}
 
-      {tab === 'coach' && <CoachInbox/>}
+      {tab === 'coach' && <CoachInbox />}
 
-      <div style={{ height: 80 }}/>
-      {composing && <ComposePost onClose={() => setComposing(false)} onPost={(text) => { setPosts(ps => [{ id: Date.now(), who: { name: 'Steffi', loc: 'Kigali', kind: 'user' }, time: 'now', kind: 'milestone', text, cheers: 0, comments: 0 }, ...ps]); setComposing(false); }}/>}
+      <div style={{ height: 80 }} />
+      {composing && <ComposePost onClose={() => setComposing(false)} onPost={(text) => { setPosts(ps => [{ id: Date.now(), who: { name: 'Steffi', loc: 'Kigali', kind: 'user' }, time: 'now', kind: 'milestone', text, cheers: 0, comments: 0 }, ...ps]); setComposing(false); }} />}
     </ScrollPage>
   );
 }
@@ -120,7 +119,7 @@ export function PostCard({ post, onCheer }) {
   return (
     <Card padding={0} elev="sm" style={{ overflow: 'hidden' }}>
       <div style={{ padding: '14px 16px 10px', display: 'flex', gap: 12 }}>
-        <CoachAvatar size={40} kind={isCoach ? 'fitness' : 'nutrition'}/>
+        <CoachAvatar size={40} kind={isCoach ? 'fitness' : 'nutrition'} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <span style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14 }}>{post.who.name}</span>
@@ -135,13 +134,13 @@ export function PostCard({ post, onCheer }) {
       </div>
       {post.stat && (
         <div style={{ margin: '0 16px 12px', padding: 12, background: ETL.color.tertiary, borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
-          {Icon.trophy(16, ETL.color.primary)}
+          {Icon.trophy(16, ETL.color.primary, false)}
           <span style={{ ...tStyle('small'), color: ETL.color.primary, fontWeight: 600 }}>{post.stat}</span>
         </div>
       )}
       {post.coachReply && (
         <div style={{ margin: '0 16px 12px', padding: 12, background: '#FFF4E6', borderRadius: 10, borderLeft: `3px solid ${ETL.color.secondary}`, display: 'flex', gap: 10 }}>
-          <CoachAvatar size={28} kind="fitness"/>
+          <CoachAvatar size={28} kind="fitness" />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ ...tStyle('overline'), color: '#B86E20', textTransform: 'uppercase', fontWeight: 700, marginBottom: 2 }}>{post.coachReply.name} · replied</div>
             <div style={{ ...tStyle('small'), color: ETL.color.neutral80, lineHeight: 1.45 }}>{post.coachReply.text}</div>
@@ -149,9 +148,9 @@ export function PostCard({ post, onCheer }) {
         </div>
       )}
       <div style={{ padding: '8px 8px 8px', display: 'flex', borderTop: `1px solid ${ETL.color.neutral10}` }}>
-        <PostAction onClick={onCheer} active={post.cheered} icon="🎉" label={`${post.cheers} cheers`}/>
-        <PostAction icon="💬" label={`${post.comments} replies`}/>
-        <PostAction icon="↗" label="Share"/>
+        <PostAction onClick={onCheer} active={post.cheered} icon="🎉" label={`${post.cheers} cheers`} />
+        <PostAction icon="💬" label={`${post.comments} replies`} active={false} onClick={() => {}} />
+        <PostAction icon="↗" label="Share" active={false} onClick={() => {}} />
       </div>
     </Card>
   );
@@ -177,7 +176,7 @@ export function CoachInbox() {
     { id: 2, from: 'Jeanne d.', role: 'Nutritionist', preview: 'Your protein is averaging 95g — try adding eggs at breakfast.', time: '1d', unread: true, kind: 'nutrition' },
     { id: 3, from: 'Aline U.', role: 'Lead coach', preview: 'Welcome! I\'ve loaded your Phase 1 plan. Ping me if anything pinches.', time: '4d', unread: false, kind: 'fitness' },
   ];
-  if (thread) return <CoachThread coach={thread} onBack={() => setThread(null)}/>;
+  if (thread) return <CoachThread coach={thread} onBack={() => setThread(null)} />;
   return (
     <div style={{ padding: '0 20px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
       {messages.map(m => (
@@ -186,7 +185,7 @@ export function CoachInbox() {
           border: 'none', cursor: 'pointer', textAlign: 'left',
           display: 'flex', gap: 12, alignItems: 'flex-start',
         }}>
-          <CoachAvatar size={44} kind={m.kind}/>
+          <CoachAvatar size={44} kind={m.kind} />
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 2 }}>
               <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14 }}>{m.from}</div>
@@ -197,7 +196,7 @@ export function CoachInbox() {
               {m.preview}
             </div>
           </div>
-          {m.unread && <div style={{ width: 8, height: 8, borderRadius: 4, background: ETL.color.secondary, flexShrink: 0, marginTop: 6 }}/>}
+          {m.unread && <div style={{ width: 8, height: 8, borderRadius: 4, background: ETL.color.secondary, flexShrink: 0, marginTop: 6 }} />}
         </button>
       ))}
     </div>
@@ -220,8 +219,8 @@ export function CoachThread({ coach, onBack }) {
   return (
     <div style={{ padding: '0 0 20px', display: 'flex', flexDirection: 'column' }}>
       <div style={{ padding: '0 20px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
-        <button onClick={onBack} style={{ width: 36, height: 36, borderRadius: 18, background: '#fff', border: 'none', boxShadow: ETL.shadow.sm, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>{Icon.chevL(16, ETL.color.neutral)}</button>
-        <CoachAvatar size={36} kind={coach.kind}/>
+        <button onClick={onBack} style={{ width: 36, height: 36, borderRadius: 18, background: '#fff', border: 'none', boxShadow: ETL.shadow.sm, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>{Icon.chevL(16, ETL.color.neutral, false)}</button>
+        <CoachAvatar size={36} kind={coach.kind} />
         <div style={{ flex: 1 }}>
           <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14 }}>{coach.from}</div>
           <div style={{ ...tStyle('small'), color: '#34C759', fontWeight: 600 }}>● Online</div>
@@ -249,12 +248,12 @@ export function CoachThread({ coach, onBack }) {
       <div style={{ padding: '14px 20px 0', display: 'flex', gap: 8 }}>
         <input value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()}
           placeholder="Type a message…" style={{
-          flex: 1, height: 44, padding: '0 16px', borderRadius: 22,
-          background: '#fff', border: `1.5px solid ${ETL.color.neutral20}`,
-          fontFamily: ETL.font.family, fontSize: 14, outline: 'none',
-        }}/>
+            flex: 1, height: 44, padding: '0 16px', borderRadius: 22,
+            background: '#fff', border: `1.5px solid ${ETL.color.neutral20}`,
+            fontFamily: ETL.font.family, fontSize: 14, outline: 'none',
+          }} />
         <button onClick={send} style={{ width: 44, height: 44, borderRadius: 22, background: ETL.color.primary, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M2 21 L23 12 L2 3 V10 L17 12 L2 14 Z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M2 21 L23 12 L2 3 V10 L17 12 L2 14 Z" /></svg>
         </button>
       </div>
     </div>
@@ -273,12 +272,12 @@ export function ComposePost({ onClose, onPost }) {
           <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 16, background: '#fff', border: 'none', cursor: 'pointer', boxShadow: ETL.shadow.sm }}>×</button>
         </div>
         <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
-          {[{id:'milestone',l:'🏅 Milestone'},{id:'workout',l:'💪 Workout'},{id:'meal',l:'🍲 Meal'},{id:'question',l:'❓ Question'}].map(t => (
+          {[{ id: 'milestone', l: '🏅 Milestone' }, { id: 'workout', l: '💪 Workout' }, { id: 'meal', l: '🍲 Meal' }, { id: 'question', l: '❓ Question' }].map(t => (
             <Chip key={t.id} active={tag === t.id} onClick={() => setTag(t.id)} size="sm">{t.l}</Chip>
           ))}
         </div>
         <textarea value={text} onChange={e => setText(e.target.value)} placeholder="Sangira umuryango · share your win, meal, or lesson with the family…"
-          style={{ width: '100%', minHeight: 100, padding: 14, background: '#fff', borderRadius: 12, border: `1.5px solid ${ETL.color.neutral20}`, fontFamily: ETL.font.family, fontSize: 14, color: ETL.color.neutral, outline: 'none', boxSizing: 'border-box', resize: 'none', lineHeight: 1.5 }}/>
+          style={{ width: '100%', minHeight: 100, padding: 14, background: '#fff', borderRadius: 12, border: `1.5px solid ${ETL.color.neutral20}`, fontFamily: ETL.font.family, fontSize: 14, color: ETL.color.neutral, outline: 'none', boxSizing: 'border-box', resize: 'none', lineHeight: 1.5 }} />
         <div style={{ ...tStyle('small'), color: ETL.color.neutral60, marginTop: 8, marginBottom: 14 }}>
           🌿 Visible to your coaches and your ETL community.
         </div>

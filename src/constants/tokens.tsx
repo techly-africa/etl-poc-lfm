@@ -1,7 +1,33 @@
 // Design tokens — ETL Body Reset
 // Single source of truth.
 
-export const ETL = {
+export interface TokenStyle {
+  size: number;
+  weight: number;
+  lh: number;
+  ls: number;
+}
+
+export interface DesignTokens {
+  color: { [key: string]: string };
+  font: {
+    family: string;
+    h1: TokenStyle;
+    h2: TokenStyle;
+    h3: TokenStyle;
+    h4: TokenStyle;
+    body: TokenStyle;
+    bodyM: TokenStyle;
+    small: TokenStyle;
+    label: TokenStyle;
+    overline: TokenStyle;
+  };
+  radius: { [key: string]: number };
+  space: (n: number) => number;
+  shadow: { [key: string]: string };
+}
+
+export const ETL: DesignTokens = {
   color: {
     primary: '#2D6A4F',      // deep forest
     primaryDark: '#1F4D3A',
@@ -34,7 +60,7 @@ export const ETL = {
     overline: { size: 11, weight: 600, lh: 1.2, ls: 0.8 },
   },
   radius: { sm: 8, md: 14, lg: 20, xl: 28, full: 999 },
-  space: (n) => n * 4,
+  space: (n: number) => n * 4,
   shadow: {
     sm: '0 1px 2px rgba(27,27,27,0.04), 0 1px 3px rgba(27,27,27,0.06)',
     md: '0 2px 4px rgba(27,27,27,0.04), 0 8px 16px rgba(27,27,27,0.06)',
@@ -44,8 +70,9 @@ export const ETL = {
 };
 
 // Typography helpers — apply a token style on any element.
-export const tStyle = (key) => {
-  const t = ETL.font[key];
+export const tStyle = (key: keyof DesignTokens['font']) => {
+  if (key === 'family') return { fontFamily: ETL.font.family };
+  const t = ETL.font[key] as TokenStyle;
   return {
     fontFamily: ETL.font.family,
     fontSize: t.size,

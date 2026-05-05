@@ -1,17 +1,43 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ETL } from '../constants/tokens';
 
 // Multi-language support: English (en), French (fr), Kinyarwanda (rw)
 // Exposes: LangContext, LangProvider, useT(), LangSwitcher
 
-export const TRANSLATIONS = {
+export type Lang = 'en' | 'fr' | 'rw';
+
+export const TRANSLATIONS: Record<Lang, Record<string, string>> = {
   en: {
     // Nav
     'nav.home': 'Today',
     'nav.move': 'Move',
     'nav.nourish': 'Nourish',
-    'nav.community': 'Community',
+    'nav.community': 'Family',
     'nav.me': 'Me',
+
+    // Locations
+    'loc.gacuriro': 'Gacuriro Gym',
+    'loc.remera': 'Remera Gym',
+    'loc.kimihurura': 'Kimihurura Gym',
+    'loc.home': 'Home session',
+
+    // Shop
+    'shop.title': 'ETL Shop',
+    'shop.sub': 'Gear & Supplements',
+    'shop.bottle.name': 'Branded Water Bottle',
+    'shop.bottle.desc': '750ml · Matte finish',
+    'shop.supps.name': 'Reset Protein',
+    'shop.supps.desc': 'Plant-based · 30 servings',
+    'shop.shirt.name': 'ETL Training Tee',
+    'shop.shirt.desc': 'Breathable · Kigali made',
+
+    // Appointments
+    'apt.title': 'Appointments',
+    'apt.sub': 'Book your sessions',
+    'apt.coach': 'Fitness Coach',
+    'apt.nutritionist': 'Nutritionist',
+    'apt.physician': 'Physician',
+    'apt.book': 'Book session',
 
     // Onboarding
     'onboard.welcome.overline': '🇷🇼 Murakaza neza · You are welcome',
@@ -104,22 +130,22 @@ export const TRANSLATIONS = {
     'move.title1': 'Full Body Activation',
     'move.group1a': 'Full body',
     'move.group1b': 'Mobility',
-    'move.loc1': 'Kigali · Gikondo',
+    'move.loc1': 'Kigali · Gacuriro',
     'move.day3': 'Wed · Day 3',
     'move.title3': 'Lower Body Base',
     'move.group3a': 'Glutes',
     'move.group3b': 'Quads',
-    'move.loc3': 'Kigali · Kimironko',
+    'move.loc3': 'Kigali · Remera',
     'move.day5': 'Fri · Day 5',
     'move.title5': 'Upper Body Base',
     'move.group5a': 'Push',
     'move.group5b': 'Pull',
-    'move.loc5': 'Home session',
+    'move.loc5': 'Kigali · Kimihurura',
     'move.day6': 'Sat · Day 6',
     'move.title6': 'Hill Run + Core',
     'move.group6a': 'Cardio',
     'move.group6b': 'Core',
-    'move.loc6': 'Nyamirambo hills',
+    'move.loc6': 'Kimihurura hills',
     'move.complete.sub': 'Wabikoze neza!',
     'move.complete': 'Nice work!',
     'move.complete.body': 'You moved with intention today. That\'s the reset.',
@@ -153,11 +179,11 @@ export const TRANSLATIONS = {
     'progress.rewards.sub': 'Earned this phase',
 
     // Community
-    'community.sub': '🇷🇼 Umuryango · ETL community',
-    'community.title': 'Community',
+    'community.sub': '🇷🇼 Umuryango · ETL Family',
+    'community.title': 'Family',
     'community.proverb.rw': 'Umuntu ni umuntu kubw\'abantu',
     'community.proverb.en': 'A person is a person through other people',
-    'community.compose': 'Sangira umuryango · share your win, meal, or lesson with the family…',
+    'community.compose': 'Sangira n\'umuryango · share your win, meal, or lesson with the family…',
     'community.tab.feed': 'Feed',
     'community.tab.coach': 'My Coach',
 
@@ -352,7 +378,7 @@ export const TRANSLATIONS = {
     'onboard.step.next': 'Komeza',
     'onboard.step.start': 'Tangira reset yanjye',
 
-    'onboard.goals.title': 'Ni iki gituma uza?',
+    'onboard.goals.title': 'Ikizaba gituma uza?',
     'onboard.goals.sub': 'Hitamo ibyo ukora kuri ubu.',
     'onboard.goals.activity': 'Urwego rw\'ibikorwa bya buri munsi',
     'onboard.goal.lose': 'Kugabanya ibiro',
@@ -497,19 +523,24 @@ export const TRANSLATIONS = {
 };
 
 // Simple interpolation: t('home.day', {n: 12}) → "Day 12 / 84"
-function interpolate(str, vars) {
+function interpolate(str: string, vars?: Record<string, any>) {
   if (!vars || !str) return str;
   return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] !== undefined ? vars[k] : `{${k}}`);
 }
 
-export const LangContext = React.createContext({ lang: 'en', setLang: () => {} });
+interface LangContextType {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+}
 
-export function LangProvider({ children }) {
+export const LangContext = React.createContext<LangContextType>({ lang: 'en', setLang: () => {} });
+
+export function LangProvider({ children }: { children: ReactNode }) {
   const saved = (() => {
-    try { return localStorage.getItem('etl_lang') || 'en'; } catch { return 'en'; }
+    try { return (localStorage.getItem('etl_lang') as Lang) || 'en'; } catch { return 'en'; }
   })();
-  const [lang, setLangState] = React.useState(saved);
-  const setLang = (l) => {
+  const [lang, setLangState] = React.useState<Lang>(saved);
+  const setLang = (l: Lang) => {
     setLangState(l);
     try { localStorage.setItem('etl_lang', l); } catch {}
   };
@@ -521,18 +552,18 @@ export function LangProvider({ children }) {
 }
 
 export function useT() {
-  const { lang } = React.useContext(LangContext);
-  return (key, vars) => {
-    const dict = TRANSLATIONS[lang] || TRANSLATIONS.en;
-    const str = dict[key] ?? TRANSLATIONS.en[key] ?? key;
+  // We keep the lang context to avoid breaking components, but force English
+  return (key: string, vars?: Record<string, any>) => {
+    const dict = TRANSLATIONS.en;
+    const str = dict[key] ?? key;
     return interpolate(str, vars);
   };
 }
 
 // Language switcher — compact pill trio
-export function LangSwitcher({ style = {} }) {
+export function LangSwitcher({ style = {} }: { style?: React.CSSProperties }) {
   const { lang, setLang } = React.useContext(LangContext);
-  const langs = [
+  const langs: { id: Lang; label: string }[] = [
     { id: 'en', label: 'EN' },
     { id: 'fr', label: 'FR' },
     { id: 'rw', label: 'RW' },

@@ -1,5 +1,5 @@
-import React from 'react';
-import { ETL, tStyle } from '../../constants/tokens';
+import React, { ReactNode, CSSProperties } from 'react';
+import { ETL, tStyle, DesignTokens } from '../../constants/tokens';
 import { useT } from '../../i18n/index';
 import { Icon } from '../art/index';
 import { ImigongoBand } from '../art/rw';
@@ -7,7 +7,18 @@ import { ImigongoBand } from '../art/rw';
 // Shared UI primitives — buttons, chips, progress, nav.
 // Enhanced with Rwandan visual identity: Imigongo nav accent, richer screen headers.
 
-export function Btn({ kind = 'primary', children, onClick, full = false, size = 'md', icon, disabled = false, style = {} }) {
+interface BtnProps {
+  kind?: 'primary' | 'secondary' | 'inverted' | 'outlined' | 'ghost';
+  children: ReactNode;
+  onClick?: () => void;
+  full?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  icon?: ReactNode;
+  disabled?: boolean;
+  style?: CSSProperties;
+}
+
+export function Btn({ kind = 'primary', children, onClick, full = false, size = 'md', icon, disabled = false, style = {} }: BtnProps) {
   const sizes = {
     sm: { h: 36, px: 14, fs: 13, fw: 600 },
     md: { h: 48, px: 20, fs: 15, fw: 600 },
@@ -56,7 +67,17 @@ export function Btn({ kind = 'primary', children, onClick, full = false, size = 
   );
 }
 
-export function Chip({ children, active = false, onClick, locked = false, size = 'md', accent = 'primary', style = {} }) {
+interface ChipProps {
+  children: ReactNode;
+  active?: boolean;
+  onClick?: () => void;
+  locked?: boolean;
+  size?: 'sm' | 'md';
+  accent?: 'primary' | 'orange';
+  style?: CSSProperties;
+}
+
+export function Chip({ children, active = false, onClick, locked = false, size = 'md', accent = 'primary', style = {} }: ChipProps) {
   const sizes = { sm: { h: 28, px: 10, fs: 12 }, md: { h: 36, px: 14, fs: 13 } }[size];
   const accentColor = accent === 'orange' ? ETL.color.secondary : ETL.color.primary;
   return (
@@ -76,7 +97,15 @@ export function Chip({ children, active = false, onClick, locked = false, size =
   );
 }
 
-export function ProgressBar({ value, max = 100, color = ETL.color.primary, height = 8, bg = ETL.color.tertiaryDeep }) {
+interface ProgressBarProps {
+  value: number;
+  max?: number;
+  color?: string;
+  height?: number;
+  bg?: string;
+}
+
+export function ProgressBar({ value, max = 100, color = ETL.color.primary, height = 8, bg = ETL.color.tertiaryDeep }: ProgressBarProps) {
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
   return (
     <div style={{ width: '100%', height, background: bg, borderRadius: height, overflow: 'hidden' }}>
@@ -88,7 +117,7 @@ export function ProgressBar({ value, max = 100, color = ETL.color.primary, heigh
   );
 }
 
-export function ProgressDots({ count, current }) {
+export function ProgressDots({ count, current }: { count: number; current: number }) {
   return (
     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
       {Array.from({ length: count }).map((_, i) => (
@@ -103,7 +132,17 @@ export function ProgressDots({ count, current }) {
   );
 }
 
-export function ArcProgress({ value, max = 100, size = 120, stroke = 12, color = ETL.color.primary, bg = ETL.color.tertiaryDeep, children }) {
+interface ArcProgressProps {
+  value: number;
+  max?: number;
+  size?: number;
+  stroke?: number;
+  color?: string;
+  bg?: string;
+  children?: ReactNode;
+}
+
+export function ArcProgress({ value, max = 100, size = 120, stroke = 12, color = ETL.color.primary, bg = ETL.color.tertiaryDeep, children }: ArcProgressProps) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   const pct = Math.min(1, value / max);
@@ -123,16 +162,23 @@ export function ArcProgress({ value, max = 100, size = 120, stroke = 12, color =
   );
 }
 
-export function MacroRing({ size = 88, protein = 0.7, carbs = 0.5, fat = 0.4 }) {
+interface MacroRingProps {
+  size?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
+}
+
+export function MacroRing({ size = 88, protein = 0.7, carbs = 0.5, fat = 0.4 }: MacroRingProps) {
   const stroke = 6;
   const gap = 3;
-  const arc = (r, p, c) => {
+  const arc = (r: number, p: number, c: string) => {
     const C = 2 * Math.PI * r;
     return <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={c} strokeWidth={stroke}
       strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - p)}
       style={{ transition: 'stroke-dashoffset 0.8s' }}/>;
   };
-  const arcBg = (r) => <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#EDEDEA" strokeWidth={stroke}/>;
+  const arcBg = (r: number) => <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#EDEDEA" strokeWidth={stroke}/>;
   const r1 = (size - stroke) / 2;
   const r2 = r1 - stroke - gap;
   const r3 = r2 - stroke - gap;
@@ -145,7 +191,17 @@ export function MacroRing({ size = 88, protein = 0.7, carbs = 0.5, fat = 0.4 }) 
   );
 }
 
-export function Card({ children, padding = 16, bg = '#fff', radius = ETL.radius.lg, style = {}, onClick, elev = 'sm' }) {
+interface CardProps {
+  children: ReactNode;
+  padding?: number;
+  bg?: string;
+  radius?: number;
+  style?: CSSProperties;
+  onClick?: () => void;
+  elev?: 'none' | 'sm' | 'md' | 'lg' | 'glow';
+}
+
+export function Card({ children, padding = 16, bg = '#fff', radius = ETL.radius.lg, style = {}, onClick, elev = 'sm' }: CardProps) {
   return (
     <div onClick={onClick} style={{
       background: bg, borderRadius: radius, padding,
@@ -157,7 +213,14 @@ export function Card({ children, padding = 16, bg = '#fff', radius = ETL.radius.
   );
 }
 
-export function SectionTitle({ children, sub, rw, style = {} }) {
+interface SectionTitleProps {
+  children: ReactNode;
+  sub?: string;
+  rw?: string;
+  style?: CSSProperties;
+}
+
+export function SectionTitle({ children, sub, rw, style = {} }: SectionTitleProps) {
   return (
     <div style={{ ...style }}>
       {rw && (
@@ -171,9 +234,14 @@ export function SectionTitle({ children, sub, rw, style = {} }) {
   );
 }
 
-export function BottomNav({ active, onChange }) {
+interface BottomNavProps {
+  active: string;
+  onChange: (id: string) => void;
+}
+
+export function BottomNav({ active, onChange }: BottomNavProps) {
   const t = useT();
-  const tabs = [
+  const tabs: { id: string; labelKey: string; icon: keyof typeof Icon }[] = [
     { id: 'home',      labelKey: 'nav.home',      icon: 'home' },
     { id: 'move',      labelKey: 'nav.move',       icon: 'dumbbell' },
     { id: 'nourish',   labelKey: 'nav.nourish',    icon: 'leaf' },
@@ -209,7 +277,7 @@ export function BottomNav({ active, onChange }) {
               fontFamily: ETL.font.family,
               transition: 'all 0.2s',
             }}>
-              {Icon[tab.icon](22, 'currentColor', isActive)}
+              {(Icon as any)[tab.icon](22, 'currentColor', isActive)}
               <span style={{ fontSize: 9, fontWeight: isActive ? 700 : 500, letterSpacing: 0.2, lineHeight: 1.2 }}>{t(tab.labelKey)}</span>
             </button>
           );
@@ -219,7 +287,15 @@ export function BottomNav({ active, onChange }) {
   );
 }
 
-export function ScreenHeader({ title, sub, action, leading, imigongo = false }) {
+interface ScreenHeaderProps {
+  title: string;
+  sub?: string;
+  action?: ReactNode;
+  leading?: ReactNode;
+  imigongo?: boolean;
+}
+
+export function ScreenHeader({ title, sub, action, leading, imigongo = false }: ScreenHeaderProps) {
   return (
     <div>
       {imigongo && <ImigongoBand width={390} height={8} palette="light"/>}
@@ -235,7 +311,7 @@ export function ScreenHeader({ title, sub, action, leading, imigongo = false }) 
   );
 }
 
-export function ScrollPage({ children, bg = ETL.color.surface }) {
+export function ScrollPage({ children, bg = ETL.color.surface }: { children: ReactNode; bg?: string }) {
   return (
     <div style={{ 
       width: '100%', 
@@ -249,24 +325,31 @@ export function ScrollPage({ children, bg = ETL.color.surface }) {
   );
 }
 
-export function Pill({ children, color = 'neutral', style = {} }) {
+interface PillProps {
+  children: ReactNode;
+  color?: 'primary' | 'orange' | 'neutral';
+  size?: 'sm' | 'md';
+  style?: CSSProperties;
+}
+
+export function Pill({ children, color = 'neutral', size = 'md', style = {} }: PillProps) {
   const colors = {
     primary:   { bg: ETL.color.tertiary,  fg: ETL.color.primary },
     orange:    { bg: '#FCEDDC',           fg: '#B86E20' },
-    neutral:   { bg: ETL.color.neutral10, fg: ETL.color.neutral60 },
-  }[color] || { bg: ETL.color.neutral10, fg: ETL.color.neutral60 };
+    neutral:   { bg: ETL.color.neutral10, fg: ETL.color.neutral80 },
+  }[color] || { bg: ETL.color.neutral10, fg: ETL.color.neutral80 };
   return (
     <div style={{
-      padding: '4px 10px', borderRadius: 6,
+      padding: size === 'sm' ? '2px 8px' : '4px 10px', borderRadius: 6,
       background: colors.bg, color: colors.fg,
-      ...tStyle('overline'), fontSize: 10, fontWeight: 700,
+      ...tStyle('overline'), fontSize: size === 'sm' ? 9 : 10, fontWeight: 700,
       display: 'inline-block',
       ...style,
     }}>{children}</div>
   );
 }
 
-export function IOSDevice({ children, width = 390, height = 844 }) {
+export function IOSDevice({ children, width = 390, height = 844 }: { children: ReactNode; width?: number; height?: number }) {
   return (
     <div style={{
       width, height, position: 'relative',
@@ -285,3 +368,4 @@ export function IOSDevice({ children, width = 390, height = 844 }) {
     </div>
   );
 }
+

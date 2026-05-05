@@ -52,7 +52,7 @@ export function NourishScreen({ onNav }) {
         <Card style={{ background: ETL.color.tertiary, border: `1px solid ${ETL.color.tertiaryDeep}` }} elev="none">
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ width: 44, height: 44, borderRadius: 22, background: ETL.color.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              {Icon.timer(20, '#fff')}
+              {Icon.timer(20, '#fff', false)}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 15 }}>16:8 fasting · Week 2</div>
@@ -89,7 +89,7 @@ export function NourishScreen({ onNav }) {
         <Card style={{ background: ETL.color.tertiary }} elev="none">
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
             <div style={{ width: 36, height: 36, borderRadius: 10, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              {Icon.sparkle(18, ETL.color.primary)}
+              {Icon.sparkle(18, ETL.color.primary, false)}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ ...tStyle('h4'), color: ETL.color.neutral, marginBottom: 4 }}>{t('nourish.insight')}</div>
@@ -109,13 +109,13 @@ export function NourishScreen({ onNav }) {
         <Card onClick={() => onNav('move')} style={{ background: '#fff' }} elev="sm">
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: ETL.color.tertiary, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {Icon.dumbbell(20, ETL.color.primary)}
+              {Icon.dumbbell(20, ETL.color.primary, false)}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14 }}>Today's workout · 35 min</div>
               <div style={{ ...tStyle('small'), color: ETL.color.neutral60 }}>Upper Body Base · before your eating window</div>
             </div>
-            {Icon.chevR(16, ETL.color.neutral60)}
+            {Icon.chevR(16, ETL.color.neutral60, false)}
           </div>
         </Card>
       </div>
@@ -167,9 +167,9 @@ export function MealRow({ meal, expanded, onToggle, onPlay }) {
         <div style={{ padding: '0 14px 14px', borderTop: `1px solid ${ETL.color.neutral10}`, paddingTop: 12, marginTop: 0 }}>
           <div style={{ ...tStyle('small'), color: ETL.color.neutral80, marginBottom: 10 }}>{meal.desc}</div>
           <div style={{ display: 'flex', gap: 6 }}>
-            <Pill color="primary">P {meal.p}g</Pill>
-            <Pill color="orange">C {meal.c}g</Pill>
-            <Pill>F {meal.f}g</Pill>
+            <NourishPill color="primary">P {meal.p}g</NourishPill>
+            <NourishPill color="orange">C {meal.c}g</NourishPill>
+            <NourishPill>F {meal.f}g</NourishPill>
           </div>
         </div>
       )}
@@ -177,7 +177,7 @@ export function MealRow({ meal, expanded, onToggle, onPlay }) {
   );
 }
 
-export function Pill({ children, color = 'neutral' }) {
+export function NourishPill({ children, color = 'neutral' }) {
   const palettes = {
     neutral: { bg: ETL.color.neutral10, fg: ETL.color.neutral80 },
     primary: { bg: ETL.color.tertiary, fg: ETL.color.primary },

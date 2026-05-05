@@ -62,7 +62,17 @@ export function HomeScreen({ user, onNav, onStartWorkout }) {
               {greet.en} · {t('home.context')}
             </div>
           </div>
-          <RWStreakFlame n={4} today={true}/>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button onClick={() => onNav('notifications')} style={{
+              width: 44, height: 44, borderRadius: 22, background: '#fff', border: 'none',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+              position: 'relative', boxShadow: ETL.shadow.sm
+            }}>
+              {Icon.bell(24, ETL.color.neutral, false)}
+              <div style={{ position: 'absolute', top: 12, right: 12, width: 8, height: 8, borderRadius: 4, background: ETL.color.secondary, border: '2px solid #fff' }}/>
+            </button>
+            <RWStreakFlame n={4} today={true}/>
+          </div>
         </div>
       </div>
 
@@ -115,8 +125,8 @@ export function HomeScreen({ user, onNav, onStartWorkout }) {
             <div style={{ ...tStyle('small'), color: ETL.color.neutral60, marginBottom: 12 }}>
               35 min · 4 exercises
             </div>
-            <div style={{ marginBottom: 12 }}><WorkoutThumb w="100%" h={70}/></div>
-            <Btn kind="primary" size="sm" full icon={Icon.play(12, '#fff')}>Start workout</Btn>
+            <div style={{ marginBottom: 12 }}><WorkoutThumb w="100%" h={70} hue="green"/></div>
+            <Btn kind="primary" size="sm" full icon={Icon.play(12, '#fff', true)}>Start workout</Btn>
           </div>
         </Card>
 
@@ -196,9 +206,9 @@ export function HomeScreen({ user, onNav, onStartWorkout }) {
         <SectionTitle style={{ marginBottom: 12 }}>Today's habits</SectionTitle>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <HabitRow icon={Icon.dumbbell(18, ETL.color.primary)} label="Morning workout" sub="35 min · Phase 1" checked={habits.workout} onClick={() => toggle('workout')}/>
-          <HabitRow icon={Icon.bowl(18, ETL.color.primary)} label="Log first meal" sub="Eating window opens 12:00" checked={habits.breakfast} onClick={() => toggle('breakfast')}/>
-          <HabitRow icon={Icon.drop(18, ETL.color.primary)} label="2L water" sub={`${habits.water}L of 2L`} checked={habits.water >= 2} progress={habits.water/2} onClick={() => setHabits(h => ({ ...h, water: Math.min(2, h.water + 0.5) }))}/>
-          <HabitRow icon={Icon.walk(18, ETL.color.primary)} label="Evening walk" sub="20 min · 6,000 steps target" checked={habits.walk} onClick={() => toggle('walk')}/>
+          <HabitRow icon={Icon.bowl(18, ETL.color.primary, false)} label="Log first meal" sub="Eating window opens 12:00" checked={habits.breakfast} onClick={() => toggle('breakfast')}/>
+          <HabitRow icon={Icon.drop(18, ETL.color.primary, false)} label="2L water" sub={`${habits.water}L of 2L`} checked={habits.water >= 2} progress={habits.water/2} onClick={() => setHabits(h => ({ ...h, water: Math.min(2, h.water + 0.5) }))}/>
+          <HabitRow icon={Icon.walk(18, ETL.color.primary, false)} label="Evening walk" sub="20 min · 6,000 steps target" checked={habits.walk} onClick={() => toggle('walk')}/>
         </div>
       </div>
 
@@ -206,7 +216,7 @@ export function HomeScreen({ user, onNav, onStartWorkout }) {
       <div style={{ padding: '0 20px 28px' }}>
         <Card padding={0} elev="sm" onClick={() => onNav('community')} style={{ overflow: 'hidden', cursor: 'pointer' }}>
           <div style={{ background: ETL.color.tertiary, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
-            {Icon.home(16, ETL.color.primary)}
+            {Icon.home(16, ETL.color.primary, true)}
             <span style={{ ...tStyle('overline'), color: ETL.color.primary, textTransform: 'uppercase', fontWeight: 700 }}>{t('home.community.label')}</span>
           </div>
           <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>

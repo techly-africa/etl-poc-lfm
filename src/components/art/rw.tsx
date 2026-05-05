@@ -229,6 +229,51 @@ export function KinyarwandaProverb({ rw, en, style = {} }) {
   );
 }
 
+// Branded Water Bottle illustration
+export function BrandedWaterBottle({ size = 120 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 120 120" fill="none">
+      <defs>
+        <linearGradient id="bw-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={ETL.color.primary}/>
+          <stop offset="1" stopColor={ETL.color.primaryLight || '#3F8A68'}/>
+        </linearGradient>
+      </defs>
+      {/* Body */}
+      <path d="M45 40 Q45 30 50 30 L70 30 Q75 30 75 40 L75 100 Q75 110 60 110 Q45 110 45 100 Z" fill="url(#bw-grad)"/>
+      {/* Cap */}
+      <rect x="52" y="22" width="16" height="8" rx="2" fill={ETL.color.neutral}/>
+      {/* Label/Logo */}
+      <rect x="45" y="55" width="30" height="20" fill="rgba(255,255,255,0.15)"/>
+      <text x="60" y="70" textAnchor="middle" fill="#fff" fontSize="8" fontWeight="800" fontFamily="Inter">ETL</text>
+      {/* Highlights */}
+      <rect x="48" y="45" width="2" height="50" rx="1" fill="rgba(255,255,255,0.1)"/>
+    </svg>
+  );
+}
+
+// Supplement Jar illustration
+export function SupplementJar({ size = 120 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 120 120" fill="none">
+      <defs>
+        <linearGradient id="sj-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={ETL.color.neutral}/>
+          <stop offset="1" stopColor="#1B1B1B"/>
+        </linearGradient>
+      </defs>
+      {/* Body */}
+      <rect x="35" y="40" width="50" height="65" rx="8" fill="url(#sj-grad)"/>
+      {/* Lid */}
+      <rect x="32" y="32" width="56" height="12" rx="4" fill="#3D2818"/>
+      {/* Label */}
+      <rect x="35" y="55" width="50" height="35" fill={ETL.color.secondary}/>
+      <text x="60" y="72" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="800" fontFamily="Inter">RESET</text>
+      <text x="60" y="82" textAnchor="middle" fill="#fff" fontSize="6" fontWeight="500" fontFamily="Inter">PLANT PROTEIN</text>
+    </svg>
+  );
+}
+
 // Hills strip — used as header band
 export function HillsStrip({ height = 70 }) {
   return (

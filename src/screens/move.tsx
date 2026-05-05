@@ -44,7 +44,7 @@ export function MoveScreen({ onStartWorkout }) {
             display: 'flex', alignItems: 'center', gap: 6,
             cursor: p.locked ? 'not-allowed' : 'pointer',
           }}>
-            <span style={{ opacity: 0.7 }}>P{p.n}</span> {t(p.key)} {p.locked && Icon.lock(12, 'currentColor')}
+            <span style={{ opacity: 0.7 }}>P{p.n}</span> {t(p.key)} {p.locked && Icon.lock(12, 'currentColor', false)}
           </button>
         ))}
       </div>
@@ -111,7 +111,7 @@ export function MoveScreen({ onStartWorkout }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ width: 40, height: 40, borderRadius: 12, background: '#F4A26122',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              {Icon.bowl(20, ETL.color.secondary)}
+              {Icon.bowl(20, ETL.color.secondary, false)}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14, marginBottom: 2 }}>Refuel after training</div>
@@ -168,7 +168,7 @@ export function WorkoutCard({ day, title, dur, groups, status, loc, onStart }) {
       </div>
       {status === 'completed' && (
         <div style={{ width: 28, height: 28, borderRadius: 14, background: ETL.color.primary, display:'flex',alignItems:'center',justifyContent:'center', flexShrink: 0 }}>
-          {Icon.check(14, '#fff')}
+          {Icon.check(14, '#fff', false)}
         </div>
       )}
       {status === 'today' && (
@@ -176,7 +176,7 @@ export function WorkoutCard({ day, title, dur, groups, status, loc, onStart }) {
       )}
       {status === 'upcoming' && (
         <div style={{ width: 28, height: 28, borderRadius: 14, background: ETL.color.neutral10, display:'flex',alignItems:'center',justifyContent:'center', flexShrink: 0 }}>
-          {Icon.lock(14, ETL.color.neutral40)}
+          {Icon.lock(14, ETL.color.neutral40, false)}
         </div>
       )}
     </div>
@@ -223,7 +223,7 @@ export function WorkoutDetail({ onClose, onComplete }) {
           border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: ETL.shadow.sm,
-        }}>{Icon.chevL(18, ETL.color.neutral)}</button>
+        }}>{Icon.chevL(18, ETL.color.neutral, false)}</button>
         <div style={{ flex: 1 }}>
           <div style={{ ...tStyle('overline'), color: ETL.color.primary, textTransform: 'uppercase' }}>Phase 1 · Wk 1</div>
           <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>Upper Body Base</div>
@@ -291,7 +291,7 @@ export function ExerciseCard({ ex, idx, onLog }) {
             </button>
             <div style={{ ...tStyle('h1'), fontSize: 40, color: ETL.color.neutral, minWidth: 60, textAlign: 'center' }}>{reps}</div>
             <button onClick={() => setReps(reps + 1)} style={{ width: 40, height: 40, borderRadius: 20, background: ETL.color.tertiary, border: 'none', cursor: 'pointer', display:'flex',alignItems:'center',justifyContent:'center' }}>
-              {Icon.plus(18, ETL.color.primary)}
+              {Icon.plus(18, ETL.color.primary, false)}
             </button>
           </div>
         </div>
@@ -358,14 +358,14 @@ export function CompletionScreen({ onClose }) {
         marginTop: 24, padding: '14px 24px', borderRadius: ETL.radius.full,
         background: ETL.color.tertiary, display: 'flex', alignItems: 'center', gap: 8,
       }}>
-        {Icon.sparkle(16, ETL.color.primary)}
+        {Icon.sparkle(16, ETL.color.primary, false)}
         <span style={{ ...tStyle('h4'), color: ETL.color.primary, fontSize: 15 }}>+50 reset points</span>
       </div>
 
       <Card style={{ marginTop: 24, width: '100%', background: '#FFF4E6', border: `1px solid #F4A26133` }} elev="none">
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 36, height: 36, borderRadius: 10, background: '#F4A26122', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {Icon.bowl(18, ETL.color.secondary)}
+            {Icon.bowl(18, ETL.color.secondary, false)}
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 14 }}>Refuel within 90 minutes</div>

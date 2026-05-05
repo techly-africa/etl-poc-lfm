@@ -5,9 +5,9 @@ import { LangProvider, LangSwitcher, useT } from './i18n/index';
 import { Icon, LogoMark } from './components/art/index';
 import { ImigongoCorner } from './components/art/rw';
 import { useTweaks, TweaksPanel, TweakSection, TweakToggle, TweakColor, TweakRadio } from './components/tweaks/index';
-import { 
-  IOSDevice, ScreenHeader, BottomNav, ProgressBar, 
-  ArcProgress, MacroRing, ProgressDots, Btn, Chip, Pill, Card 
+import {
+  IOSDevice, ScreenHeader, BottomNav, ProgressBar,
+  ArcProgress, MacroRing, ProgressDots, Btn, Chip, Pill, Card
 } from './components/ui/index';
 
 import { Onboarding } from './screens/onboarding';
@@ -49,24 +49,24 @@ export default function App() {
         flexDirection: 'column',
         gap: 20,
       }}>
-        {tweaks.view === 'prototype' && <Prototype tweaks={tweaks}/>}
-        {tweaks.view === 'system'    && <SystemPanel/>}
-        {tweaks.view === 'all'       && <AllScreens/>}
+        {tweaks.view === 'prototype' && <Prototype tweaks={tweaks} />}
+        {tweaks.view === 'system' && <SystemPanel />}
+        {tweaks.view === 'all' && <AllScreens />}
 
         <TweaksPanel title="Tweaks" defaultOpen={false}>
           <TweakSection title="Language">
-            <div style={{ padding: '4px 0' }}><LangSwitcher/></div>
+            <div style={{ padding: '4px 0' }}><LangSwitcher /></div>
           </TweakSection>
           <TweakSection title="View">
-            <TweakRadio label="Mode" k="view" value={tweaks.view} setValue={(k,v) => setTweak(k, v)}
-              options={[{ value: 'prototype', label: 'Prototype' }, { value: 'all', label: 'All screens' }, { value: 'system', label: 'Design system' }]}/>
-            <TweakToggle label="Device frame" k="showDeviceFrame" value={tweaks.showDeviceFrame} setValue={(k,v) => setTweak(k,v)}/>
-            <TweakToggle label="Skip onboarding" k="skipOnboarding" value={tweaks.skipOnboarding} setValue={(k,v) => setTweak(k,v)}/>
+            <TweakRadio label="Mode" k="view" value={tweaks.view} setValue={(k, v) => setTweak(k, v)}
+              options={[{ value: 'prototype', label: 'Prototype' }, { value: 'all', label: 'All screens' }, { value: 'system', label: 'Design system' }]} />
+            <TweakToggle label="Device frame" k="showDeviceFrame" value={tweaks.showDeviceFrame} setValue={(k, v) => setTweak(k, v)} />
+            <TweakToggle label="Skip onboarding" k="skipOnboarding" value={tweaks.skipOnboarding} setValue={(k, v) => setTweak(k, v)} />
           </TweakSection>
           <TweakSection title="Brand">
-            <TweakColor label="Primary"   k="primary"   value={tweaks.primary}   setValue={(k,v) => setTweak(k,v)}/>
-            <TweakColor label="Secondary" k="secondary" value={tweaks.secondary} setValue={(k,v) => setTweak(k,v)}/>
-            <TweakToggle label="Use logo lime accent" k="accentLime" value={tweaks.accentLime} setValue={(k,v) => setTweak(k,v)}/>
+            <TweakColor label="Primary" k="primary" value={tweaks.primary} setValue={(k, v) => setTweak(k, v)} />
+            <TweakColor label="Secondary" k="secondary" value={tweaks.secondary} setValue={(k, v) => setTweak(k, v)} />
+            <TweakToggle label="Use logo lime accent" k="accentLime" value={tweaks.accentLime} setValue={(k, v) => setTweak(k, v)} />
           </TweakSection>
         </TweaksPanel>
       </div>
@@ -80,8 +80,8 @@ export default function App() {
 function Prototype({ tweaks }) {
   const [stage, setStage] = React.useState(tweaks.skipOnboarding ? 'app' : 'onboarding');
   const [tab, setTab] = React.useState('home');
-  const [user, setUser] = React.useState({ 
-    name: 'Steffi', 
+  const [user, setUser] = React.useState({
+    name: 'Steffi',
     city: 'Kigali',
     age: 28,
     weight: 77.0,
@@ -94,7 +94,7 @@ function Prototype({ tweaks }) {
   // React to skipOnboarding tweak
   React.useEffect(() => {
     if (tweaks.skipOnboarding && stage === 'onboarding') setStage('app');
-    if (!tweaks.skipOnboarding && stage === 'app') {/* stay */}
+    if (!tweaks.skipOnboarding && stage === 'app') {/* stay */ }
   }, [tweaks.skipOnboarding]);
 
   const onComplete = (data) => { setUser({ ...user, name: data.name }); setStage('transition'); setTimeout(() => setStage('app'), 800); };
@@ -102,20 +102,21 @@ function Prototype({ tweaks }) {
   const closeWorkout = () => setWorkoutOpen(false);
 
   const screen = (() => {
-    if (stage === 'onboarding') return <Onboarding onComplete={onComplete}/>;
-    if (stage === 'transition') return <TransitionScreen/>;
-    if (tab === 'home')      return <HomeScreen     user={user} onNav={setTab} onStartWorkout={startWorkout}/>;
-    if (tab === 'move')      return <MoveScreen     onStartWorkout={startWorkout}/>;
-    if (tab === 'nourish')   return <NourishScreen  onNav={setTab}/>;
-    if (tab === 'community') return <CommunityScreen onNav={setTab}/>;
-    if (tab === 'me')        return <MeScreen        user={user}/>;
+    if (stage === 'onboarding') return <Onboarding onComplete={onComplete} />;
+    if (stage === 'transition') return <TransitionScreen />;
+    if (tab === 'home') return <HomeScreen user={user} onNav={setTab} onStartWorkout={startWorkout} />;
+    if (tab === 'move') return <MoveScreen onStartWorkout={startWorkout} />;
+    if (tab === 'nourish') return <NourishScreen onNav={setTab} />;
+    if (tab === 'community') return <CommunityScreen onNav={setTab} />;
+    if (tab === 'me') return <MeScreen user={user} />;
+    if (tab === 'notifications') return <NotificationDrawer onBack={() => setTab('home')} />;
   })();
 
   const inner = (
     <>
       {screen}
-      {stage === 'app' && <BottomNav active={tab} onChange={setTab}/>}
-      {workoutOpen && <WorkoutDetail onClose={closeWorkout} onComplete={closeWorkout}/>}
+      {stage === 'app' && <BottomNav active={tab} onChange={setTab} />}
+      {workoutOpen && <WorkoutDetail onClose={closeWorkout} onComplete={closeWorkout} />}
     </>
   );
 
@@ -138,7 +139,7 @@ function TransitionScreen() {
       animation: 'fadeIn 0.4s',
     }}>
       <style>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes pulse2 { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }`}</style>
-      <div style={{ animation: 'pulse2 1.2s infinite' }}><LogoMark size={88}/></div>
+      <div style={{ animation: 'pulse2 1.2s infinite' }}><LogoMark size={88} /></div>
       <div style={{ ...tStyle('h3'), color: ETL.color.primary, animation: 'fadeIn 0.5s 0.3s both' }}>Setting up your reset…</div>
     </div>
   );
@@ -149,14 +150,14 @@ function TransitionScreen() {
 // ─────────────────────────────────────────────────────────────
 function AllScreens() {
   const screens = [
-    { label: '01 · Onboarding', el: <OnboardingPreview step={0}/> },
-    { label: '02 · Profile setup', el: <OnboardingPreview step={1}/> },
-    { label: '03 · Plan ready', el: <OnboardingPreview step={2}/> },
-    { label: '04 · Today (Home)', el: <HomeScreen user={{name:'Steffi'}} onNav={()=>{}} onStartWorkout={()=>{}}/> , nav: 'home' },
-    { label: '05 · Move', el: <MoveScreen onStartWorkout={()=>{}}/>, nav: 'move' },
-    { label: '06 · Nourish', el: <NourishScreen onNav={()=>{}}/>, nav: 'nourish' },
-    { label: '07 · Community', el: <CommunityScreen onNav={()=>{}}/>, nav: 'community' },
-    { label: '08 · Progress', el: <MeScreen user={{name:'Steffi', city:'Kigali', age:28, weight:77, height:168, health:'Good', diet:'Plant-based'}}/>, nav: 'me' },
+    { label: '01 · Onboarding', el: <OnboardingPreview step={0} /> },
+    { label: '02 · Profile setup', el: <OnboardingPreview step={1} /> },
+    { label: '03 · Plan ready', el: <OnboardingPreview step={2} /> },
+    { label: '04 · Today (Home)', el: <HomeScreen user={{ name: 'Steffi' }} onNav={() => { }} onStartWorkout={() => { }} />, nav: 'home' },
+    { label: '05 · Move', el: <MoveScreen onStartWorkout={() => { }} />, nav: 'move' },
+    { label: '06 · Nourish', el: <NourishScreen onNav={() => { }} />, nav: 'nourish' },
+    { label: '07 · Community', el: <CommunityScreen onNav={() => { }} />, nav: 'community' },
+    { label: '08 · Progress', el: <MeScreen user={{ name: 'Steffi', city: 'Kigali', age: 28, weight: 77, height: 168, health: 'Good', diet: 'Plant-based' }} />, nav: 'me' },
   ];
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, justifyContent: 'center', padding: '0 20px' }}>
@@ -165,7 +166,7 @@ function AllScreens() {
           <div style={{ ...tStyle('label'), color: '#fff', opacity: 0.7, marginBottom: 12, textAlign: 'center', textTransform: 'none', letterSpacing: 0 }}>{s.label}</div>
           <div style={{ width: 390, height: 844, position: 'relative', borderRadius: 32, overflow: 'hidden', background: ETL.color.surface, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
             {s.el}
-            {s.nav && <BottomNav active={s.nav} onChange={()=>{}}/>}
+            {s.nav && <BottomNav active={s.nav} onChange={() => { }} />}
           </div>
         </div>
       ))}
@@ -193,7 +194,7 @@ function SystemPanel() {
       fontFamily: ETL.font.family,
     }}>
       <div style={{ marginBottom: 28, display: 'flex', alignItems: 'center', gap: 16 }}>
-        <img src="assets/etl-logo.jpeg" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'cover' }}/>
+        <img src="assets/etl-logo.jpeg" style={{ width: 64, height: 64, borderRadius: 12, objectFit: 'cover' }} />
         <div>
           <div style={{ fontSize: 11, fontWeight: 700, color: ETL.color.primary, letterSpacing: 1.2, textTransform: 'uppercase' }}>ETL · Body Reset Program</div>
           <div style={{ fontSize: 28, fontWeight: 700, color: ETL.color.neutral, marginTop: 2 }}>Design System</div>
@@ -203,24 +204,24 @@ function SystemPanel() {
 
       <SysSection title="Colors">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12 }}>
-          <Swatch hex={ETL.color.primary}    name="Primary"    sub="Forest green"/>
-          <Swatch hex={ETL.color.secondary}  name="Secondary"  sub="Warm orange"/>
-          <Swatch hex={ETL.color.tertiary}   name="Tertiary"   sub="Soft mint" dark/>
-          <Swatch hex={ETL.color.neutral}    name="Neutral"    sub="Text + icons"/>
-          <Swatch hex={ETL.color.surface}    name="Surface"    sub="Page bg" dark/>
-          <Swatch hex={ETL.color.white}      name="White"      sub="Cards" dark/>
+          <Swatch hex={ETL.color.primary} name="Primary" sub="Forest green" dark={undefined} />
+          <Swatch hex={ETL.color.secondary} name="Secondary" sub="Warm orange" dark={undefined} />
+          <Swatch hex={ETL.color.tertiary} name="Tertiary" sub="Soft mint" dark />
+          <Swatch hex={ETL.color.neutral} name="Neutral" sub="Text + icons" dark={undefined} />
+          <Swatch hex={ETL.color.surface} name="Surface" sub="Page bg" dark />
+          <Swatch hex={ETL.color.white} name="White" sub="Cards" dark />
         </div>
       </SysSection>
 
       <SysSection title="Typography">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <TypeRow size={32} weight={700} label="H1 · Inter Bold 32"/>
-          <TypeRow size={24} weight={700} label="H2 · Inter Bold 24"/>
-          <TypeRow size={20} weight={600} label="H3 · Inter SemiBold 20"/>
-          <TypeRow size={17} weight={600} label="H4 · Inter SemiBold 17"/>
-          <TypeRow size={15} weight={400} label="Body · Inter Regular 15"/>
-          <TypeRow size={13} weight={500} label="Small · Inter Medium 13"/>
-          <TypeRow size={11} weight={600} label="Overline · Inter SemiBold 11" upper/>
+          <TypeRow size={32} weight={700} label="H1 · Inter Bold 32" upper={undefined} />
+          <TypeRow size={24} weight={700} label="H2 · Inter Bold 24" upper={undefined} />
+          <TypeRow size={20} weight={600} label="H3 · Inter SemiBold 20" upper={undefined} />
+          <TypeRow size={17} weight={600} label="H4 · Inter SemiBold 17" upper={undefined} />
+          <TypeRow size={15} weight={400} label="Body · Inter Regular 15" upper={undefined} />
+          <TypeRow size={13} weight={500} label="Small · Inter Medium 13" upper={undefined} />
+          <TypeRow size={11} weight={600} label="Overline · Inter SemiBold 11" upper />
         </div>
       </SysSection>
 
@@ -249,7 +250,7 @@ function SystemPanel() {
 
       <SysSection title="Bottom navigation">
         <div style={{ width: 390, height: 100, position: 'relative', background: ETL.color.surface, borderRadius: 16, border: `1px solid ${ETL.color.neutral10}` }}>
-          <BottomNav active="home" onChange={() => {}}/>
+          <BottomNav active="home" onChange={() => { }} />
         </div>
       </SysSection>
 
@@ -258,11 +259,11 @@ function SystemPanel() {
           <ArcProgress value={68} size={100} stroke={10}>
             <div style={{ fontSize: 22, fontWeight: 700, color: ETL.color.primary }}>68%</div>
           </ArcProgress>
-          <MacroRing size={88}/>
+          <MacroRing size={88} />
           <div style={{ width: 220 }}>
-            <ProgressBar value={12} max={28}/>
+            <ProgressBar value={12} max={28} />
           </div>
-          <ProgressDots count={3} current={1}/>
+          <ProgressDots count={3} current={1} />
         </div>
       </SysSection>
     </div>
@@ -281,7 +282,7 @@ function SysSection({ title, children }) {
 function Swatch({ hex, name, sub, dark }) {
   return (
     <div style={{ borderRadius: 12, overflow: 'hidden', border: `1px solid ${ETL.color.neutral10}` }}>
-      <div style={{ height: 80, background: hex }}/>
+      <div style={{ height: 80, background: hex }} />
       <div style={{ padding: 12 }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: ETL.color.neutral }}>{name}</div>
         <div style={{ fontSize: 11, color: ETL.color.neutral60, marginTop: 2 }}>{sub}</div>
@@ -298,6 +299,46 @@ function TypeRow({ size, weight, label, upper }) {
         Eat better. Train smarter.
       </div>
       <div style={{ marginLeft: 'auto', fontSize: 11, color: ETL.color.neutral60, fontWeight: 500, whiteSpace: 'nowrap' }}>{label}</div>
+    </div>
+  );
+}
+
+function NotificationDrawer({ onBack }) {
+  const t = useT();
+  const notifications = [
+    { id: 1, title: 'Session confirmed', body: 'Your meeting with Coach Aline is set for Thursday at 14:00.', time: '2h ago', icon: 'check', kind: 'primary' },
+    { id: 2, title: 'Agaseke Reward!', body: 'You earned a new reward for your 7-day streak. Open it now!', time: '5h ago', icon: 'sparkle', kind: 'secondary' },
+    { id: 3, title: 'Form Feedback', body: 'Aline U. left a note on your Squats. Quality over quantity!', time: '1d ago', icon: 'dumbbell', kind: 'primary' },
+  ];
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, background: ETL.color.surface, zIndex: 150, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '60px 20px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <button onClick={onBack} style={{ width: 40, height: 40, borderRadius: 20, background: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: ETL.shadow.sm }}>
+          {Icon.chevL(18, ETL.color.neutral, false)}
+        </button>
+        <div style={{ flex: 1 }}>
+          <div style={{ ...tStyle('h2'), fontSize: 20 }}>Notifications</div>
+        </div>
+      </div>
+      <div style={{ flex: 1, padding: '0 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {notifications.map(n => (
+          <Card key={n.id} padding={14} elev="sm">
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: n.kind === 'primary' ? ETL.color.tertiary : '#FCEDDC', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {(Icon as any)[n.icon](18, n.kind === 'primary' ? ETL.color.primary : ETL.color.secondary, false)}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                  <div style={{ ...tStyle('h4'), fontSize: 14 }}>{n.title}</div>
+                  <div style={{ ...tStyle('small'), color: ETL.color.neutral40 }}>{n.time}</div>
+                </div>
+                <div style={{ ...tStyle('small'), color: ETL.color.neutral60, lineHeight: 1.4 }}>{n.body}</div>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
