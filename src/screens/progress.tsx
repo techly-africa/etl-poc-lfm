@@ -2,21 +2,34 @@ import React from 'react';
 import { ETL, tStyle } from '../constants/tokens';
 import { useT } from '../i18n/index';
 import { Icon, RewardBadge } from '../components/art/index';
-import { BrandedWaterBottle, SupplementJar, ImigongoCorner } from '../components/art/rw';
+import { BrandedWaterBottle, SupplementJar, ImigongoCorner, MuraSeal } from '../components/art/rw';
 import { ScreenHeader, ScrollPage, SectionTitle, Card, Btn, ProgressBar, Pill } from '../components/ui/index';
 
-// Me screen — progress + profile + metrics.
+// Me screen — progress + profile + metrics + billing + shop.
 
 export function MeScreen({ user, onNav }) {
   const t = useT();
   const [booking, setBooking] = React.useState(null);
   const [booked, setBooked] = React.useState(false);
+  const [showBilling, setShowBilling] = React.useState(false);
+  const [showShop, setShowShop] = React.useState(false);
+  const [shopStep, setShopStep] = React.useState('browse'); // browse, checkout, success
+  const [billingStep, setBillingStep] = React.useState('overview'); // overview, pay, success
+  const [selectedProduct, setSelectedProduct] = React.useState(null);
+  const [pickupLoc, setPickupLoc] = React.useState('Remera');
 
   const phases = [
     { n: 1, key: 'phase.1', state: 'active', sub: 'Day 12 / 28', stat: '8 sessions · 4kg lighter mindset' },
     { n: 2, key: 'phase.2', state: 'locked', sub: '4 weeks', stat: 'Strength + moderate cardio' },
     { n: 3, key: 'phase.3', state: 'locked', sub: '4 weeks', stat: 'Splits · interval cardio' },
     { n: 4, key: 'phase.4', state: 'locked', sub: '4 weeks', stat: 'Maintenance + habit lock-in' },
+  ];
+
+  const pickupOptions = [
+    { id: 'Remera', label: 'Remera Branch' },
+    { id: 'Kimihurura', label: 'Kimihurura Branch' },
+    { id: 'Gacuriro', label: 'Gacuriro Branch' },
+    { id: 'Metz', label: 'Steffi Metz Gourmet Shop' },
   ];
 
   return (
@@ -48,6 +61,24 @@ export function MeScreen({ user, onNav }) {
         </div>
       </div>
 
+      {/* Primary Actions Grid */}
+      <div style={{ padding: '0 20px 24px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <Card padding={16} elev="md" onClick={() => setShowBilling(true)} style={{ display: 'flex', flexDirection: 'column', gap: 10, cursor: 'pointer', background: ETL.color.tertiary }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon.check(20, ETL.color.primary)}
+          </div>
+          <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>Billing</div>
+          <div style={{ ...tStyle('small'), color: ETL.color.neutral60 }}>Manage subscription</div>
+        </Card>
+        <Card padding={16} elev="md" onClick={() => setShowShop(true)} style={{ display: 'flex', flexDirection: 'column', gap: 10, cursor: 'pointer' }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: ETL.color.tertiary, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {Icon.plus(20, ETL.color.primary)}
+          </div>
+          <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>Shop</div>
+          <div style={{ ...tStyle('small'), color: ETL.color.neutral60 }}>Merchandise</div>
+        </Card>
+      </div>
+
       <div style={{ padding: '0 20px 24px' }}>
         <SectionTitle>The 4 Pillars</SectionTitle>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 12 }}>
@@ -56,47 +87,6 @@ export function MeScreen({ user, onNav }) {
           <PillarCard label="Nutrition" value={user.diet} sub="Plant-forward" icon={Icon.leaf} />
           <PillarCard label="Exercise" value="Moderate" sub="3 sessions / wk" icon={Icon.walk} />
         </div>
-      </div>
-
-      <div style={{ padding: '0 20px 24px' }}>
-        <SectionTitle>My Goals</SectionTitle>
-        <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <GoalRow label="Build sustainable morning habits" active />
-          <GoalRow label="Hit 10k steps daily" active />
-          <GoalRow label="Master the sourdough recipe" />
-          <Btn kind="ghost" size="sm" icon={Icon.plus(14, ETL.color.primary)}>Add new goal</Btn>
-        </div>
-      </div>
-
-      {/* Top stats */}
-      <div style={{ padding: '0 20px 20px' }}>
-        <Card padding={18} elev="md" style={{ background: `linear-gradient(135deg, ${ETL.color.primary} 0%, ${ETL.color.primaryLight} 100%)`, color: '#fff', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, right: 0, opacity: 0.15, pointerEvents: 'none' }}>
-            <ImigongoCorner size={80} palette="gold" flip />
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ ...tStyle('overline'), opacity: 0.85, textTransform: 'uppercase' }}>{t('progress.level')}</div>
-              <div style={{ fontSize: 36, fontWeight: 700, lineHeight: 1.1, marginTop: 4, fontFamily: ETL.font.family }}>340</div>
-              <div style={{ ...tStyle('small'), opacity: 0.75, marginTop: 2, fontStyle: 'italic' }}>{t('progress.proverb.rw')}</div>
-              <div style={{ ...tStyle('small'), opacity: 0.6, marginTop: 1 }}>{t('progress.proverb.en')}</div>
-            </div>
-            <div style={{ width: 80, height: 80, borderRadius: 40, background: 'rgba(255,255,255,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {Icon.trophy(36, '#fff')}
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Phase timeline */}
-      <div style={{ padding: '0 20px 12px' }}>
-        <SectionTitle rw={t('progress.phases.rw')} style={{ marginBottom: 12 }}>{t('progress.phases')}</SectionTitle>
-      </div>
-      <div style={{ padding: '0 20px 20px', position: 'relative' }}>
-        {/* Vertical line */}
-        <div style={{ position: 'absolute', left: 48, top: 28, bottom: 28, width: 2, background: ETL.color.neutral10 }} />
-        <div style={{ position: 'absolute', left: 48, top: 28, height: 60, width: 2, background: ETL.color.primary }} />
-        {phases.map((p, i) => <PhaseRow key={i} {...p} />)}
       </div>
 
       {/* Rewards shelf */}
@@ -111,14 +101,6 @@ export function MeScreen({ user, onNav }) {
         <BadgeChip icon="trophy" label="Phase 1 Complete" earned={false} />
       </div>
 
-      {/* Stats grid */}
-      <div style={{ padding: '0 20px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-        <StatTile big="12" unit="" label="Workouts" sub="completed" />
-        <StatTile big="34" unit="min" label="Avg session" sub="" />
-        <StatTile big="9" unit="/ 12" label="Nutrition" sub="days on track" />
-        <StatTile big="6" unit="days" label="Longest streak" sub="" />
-      </div>
-
       {/* Body progress */}
       <div style={{ padding: '0 20px 24px' }}>
         <Card padding={18} elev="md">
@@ -130,9 +112,6 @@ export function MeScreen({ user, onNav }) {
             <Pill color="primary">↓ 1.6%</Pill>
           </div>
           <WeightChart />
-          <Btn kind="secondary" size="md" full icon={Icon.scale(16, ETL.color.primary, false)} style={{ marginTop: 14 }}>
-            Log today's check-in
-          </Btn>
         </Card>
       </div>
 
@@ -160,60 +139,237 @@ export function MeScreen({ user, onNav }) {
         </div>
       </div>
 
-      {/* ETL Shop Section */}
-      <div style={{ padding: '0 20px 24px' }}>
-        <SectionTitle sub={t('shop.sub')}>{t('shop.title')}</SectionTitle>
-        <div style={{ marginTop: 12, display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 10 }}>
-          <ShopItem icon={<BrandedWaterBottle size={80} />} name={t('shop.bottle.name')} desc={t('shop.bottle.desc')} price="15,000 RWF" />
-          <ShopItem icon={<SupplementJar size={80} />} name={t('shop.supps.name')} desc={t('shop.supps.desc')} price="45,000 RWF" />
-          <ShopItem icon={<div style={{ width: 80, height: 80, background: ETL.color.neutral10, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>👕</div>} name={t('shop.shirt.name')} desc={t('shop.shirt.desc')} price="22,000 RWF" />
-        </div>
-      </div>
+      <div style={{ height: 120 }} />
 
-      <div style={{ height: 80 }} />
+      {/* Billing Drawer */}
+      {showBilling && (
+        <Overlay onClose={() => { setShowBilling(false); setBillingStep('overview'); }}>
+          <div style={{ ...tStyle('h2'), marginBottom: 8 }}>ETL Premium</div>
+          <div style={{ ...tStyle('body'), color: ETL.color.neutral60, marginBottom: 24 }}>Manage your Body Reset subscription.</div>
+          
+          {billingStep === 'overview' && (
+            <>
+              <Card padding={16} elev="sm" style={{ marginBottom: 20, border: `1px solid ${ETL.color.tertiaryDeep}` }}>
+                <div style={{ ...tStyle('overline'), color: ETL.color.primary, marginBottom: 4 }}>Current Plan</div>
+                <div style={{ ...tStyle('h3'), marginBottom: 4 }}>Body Reset · Phase 1</div>
+                <div style={{ ...tStyle('body'), color: ETL.color.neutral60 }}>Next billing date: June 12, 2024</div>
+                <div style={{ marginTop: 12, ...tStyle('h4'), color: ETL.color.primary }}>45,000 RWF / month</div>
+              </Card>
+              <Btn full kind="primary" size="lg" onClick={() => setBillingStep('pay')}>Pay Now (Simulated)</Btn>
+              <Btn full kind="ghost" style={{ marginTop: 8 }} onClick={() => setShowBilling(false)}>Close</Btn>
+            </>
+          )}
 
-      {/* Booking Modal */}
-      {booking && (
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 200, display: 'flex', alignItems: 'flex-end' }}>
-          <div style={{ width: '100%', background: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: '24px 20px 40px', animation: 'slideUp 0.3s ease-out' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <div style={{ ...tStyle('h3') }}>{t('apt.book')} · {t(`apt.${booking}`)}</div>
-              <button onClick={() => setBooking(null)} style={{ background: 'none', border: 'none', fontSize: 24, color: ETL.color.neutral40 }}>×</button>
-            </div>
-            {booked ? (
-              <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                <div style={{ width: 64, height: 64, borderRadius: 32, background: ETL.color.tertiary, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-                  {Icon.check(32, ETL.color.primary)}
-                </div>
-                <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>Appointment confirmed!</div>
-                <div style={{ ...tStyle('body'), color: ETL.color.neutral60, marginTop: 8 }}>We'll notify you 1 hour before the session.</div>
-                <Btn full kind="primary" style={{ marginTop: 24 }} onClick={() => { setBooking(null); setBooked(false); }}>Close</Btn>
+          {billingStep === 'pay' && (
+            <div style={{ animation: 'fadeIn 0.3s' }}>
+              <div style={{ ...tStyle('h4'), marginBottom: 16 }}>Select Payment Method</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+                <PaymentRow icon="📱" label="Mobile Money" />
+                <PaymentRow icon="💳" label="Credit / Debit Card" selected />
               </div>
-            ) : (
-              <>
-                <div style={{ ...tStyle('label'), color: ETL.color.neutral60, marginBottom: 12 }}>Select Date</div>
-                <div style={{ display: 'flex', gap: 8, marginBottom: 20, overflowX: 'auto' }}>
-                  {['Mon 12', 'Tue 13', 'Wed 14', 'Thu 15', 'Fri 16'].map(d => (
-                    <button key={d} style={{ flexShrink: 0, padding: '10px 14px', borderRadius: 12, border: `1.5px solid ${d === 'Thu 15' ? ETL.color.primary : ETL.color.neutral10}`, background: d === 'Thu 15' ? ETL.color.tertiary : '#fff', color: d === 'Thu 15' ? ETL.color.primary : ETL.color.neutral }}>
-                      <div style={{ fontSize: 11, fontWeight: 700 }}>{d.split(' ')[0]}</div>
-                      <div style={{ fontSize: 15, fontWeight: 700 }}>{d.split(' ')[1]}</div>
-                    </button>
-                  ))}
+              <Card padding={16} elev="none" bg={ETL.color.surface} style={{ marginBottom: 24 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span style={{ ...tStyle('body'), color: ETL.color.neutral60 }}>Plan amount</span>
+                  <span style={{ ...tStyle('h4') }}>45,000 RWF</span>
                 </div>
-                <div style={{ ...tStyle('label'), color: ETL.color.neutral60, marginBottom: 12 }}>Select Time</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 24 }}>
-                  {['09:00', '10:30', '14:00', '15:30', '17:00'].map(tm => (
-                    <Btn key={tm} kind="outlined" size="sm">{tm}</Btn>
-                  ))}
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ ...tStyle('body'), color: ETL.color.neutral60 }}>Tax</span>
+                  <span style={{ ...tStyle('h4') }}>0 RWF</span>
                 </div>
-                <Btn full kind="primary" size="lg" onClick={() => setBooked(true)}>Confirm Booking</Btn>
-              </>
-            )}
-          </div>
-        </div>
+              </Card>
+              <Btn full kind="primary" size="lg" onClick={() => { 
+                setBillingStep('success');
+                setTimeout(() => { setShowBilling(false); setBillingStep('overview'); }, 2000);
+              }}>Pay 45,000 RWF</Btn>
+            </div>
+          )}
+
+          {billingStep === 'success' && (
+            <div style={{ textAlign: 'center', padding: '40px 0', animation: 'scaleIn 0.4s' }}>
+              <div style={{ width: 80, height: 80, borderRadius: 40, background: ETL.color.tertiary, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                {Icon.check(40, ETL.color.primary)}
+              </div>
+              <div style={{ ...tStyle('h2') }}>Payment Successful!</div>
+              <div style={{ ...tStyle('body'), color: ETL.color.neutral60, marginTop: 8 }}>Your Body Reset access is active.</div>
+            </div>
+          )}
+        </Overlay>
       )}
-      <style>{`@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }`}</style>
+
+      {/* Shop Drawer */}
+      {showShop && (
+        <Overlay onClose={() => { setShowShop(false); setShopStep('browse'); }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <div style={{ ...tStyle('h2') }}>{shopStep === 'browse' ? 'ETL Shop' : 'Checkout'}</div>
+            {shopStep !== 'browse' && shopStep !== 'success' && <Btn kind="ghost" size="sm" onClick={() => setShopStep('browse')}>Back</Btn>}
+          </div>
+
+          {shopStep === 'browse' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ ...tStyle('body'), color: ETL.color.neutral60 }}>Branded gear for your reset. Pickup at any ETL branch.</div>
+              <ShopProduct 
+                icon={<BrandedWaterBottle size={100} />} 
+                name="ETL Glass Water Bottle" 
+                price="15,000 RWF" 
+                onAdd={() => { setSelectedProduct('Water Bottle'); setShopStep('checkout'); }}
+              />
+              <ShopProduct 
+                icon={<SupplementJar size={100} />} 
+                name="ETL Recovery Supps" 
+                price="45,000 RWF" 
+                onAdd={() => { setSelectedProduct('Supplements'); setShopStep('checkout'); }}
+              />
+            </div>
+          )}
+
+          {shopStep === 'checkout' && (
+            <div style={{ animation: 'fadeIn 0.3s' }}>
+              <Card padding={16} elev="sm" style={{ marginBottom: 20, display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div style={{ width: 60, height: 60, background: ETL.color.surface, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {selectedProduct === 'Water Bottle' ? <BrandedWaterBottle size={44} /> : <SupplementJar size={44} />}
+                </div>
+                <div>
+                  <div style={{ ...tStyle('h4') }}>{selectedProduct}</div>
+                  <div style={{ ...tStyle('small'), color: ETL.color.primary, fontWeight: 700 }}>{selectedProduct === 'Water Bottle' ? '15,000' : '45,000'} RWF</div>
+                </div>
+              </Card>
+
+              <div style={{ ...tStyle('h4'), marginBottom: 12 }}>Choose Pickup Location</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
+                {pickupOptions.map(loc => (
+                  <button 
+                    key={loc.id} 
+                    onClick={() => setPickupLoc(loc.id)}
+                    style={{
+                      padding: '14px 18px', textAlign: 'left', borderRadius: 12,
+                      background: pickupLoc === loc.id ? ETL.color.tertiary : '#fff',
+                      border: `1.5px solid ${pickupLoc === loc.id ? ETL.color.primary : ETL.color.neutral10}`,
+                      transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+                    }}
+                  >
+                    <span style={{ ...tStyle('body'), fontWeight: pickupLoc === loc.id ? 600 : 400 }}>{loc.label}</span>
+                    {pickupLoc === loc.id && Icon.check(16, ETL.color.primary)}
+                  </button>
+                ))}
+              </div>
+
+              <div style={{ ...tStyle('small'), color: ETL.color.neutral60, marginBottom: 24, fontStyle: 'italic' }}>
+                Note: We do not deliver. Please show your confirmation code at the pickup location.
+              </div>
+
+              <Btn full kind="primary" size="lg" onClick={() => setShopStep('success')}>Confirm Order</Btn>
+            </div>
+          )}
+
+          {shopStep === 'success' && (
+            <div style={{ textAlign: 'center', padding: '40px 0', animation: 'scaleIn 0.4s' }}>
+              <div style={{ width: 80, height: 80, borderRadius: 40, background: ETL.color.tertiary, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                {Icon.check(40, ETL.color.primary)}
+              </div>
+              <div style={{ ...tStyle('h2') }}>Order Ready!</div>
+              <div style={{ ...tStyle('body'), color: ETL.color.neutral60, marginTop: 8, marginBottom: 24 }}>
+                Pickup your {selectedProduct} at <strong>{pickupOptions.find(o => o.id === pickupLoc)?.label}</strong>.
+              </div>
+              <Card padding={16} elev="none" bg={ETL.color.tertiary} style={{ marginBottom: 24 }}>
+                <div style={{ ...tStyle('overline'), color: ETL.color.primary }}>Pickup Code</div>
+                <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: 4, color: ETL.color.primary, marginTop: 4 }}>ETL-9942</div>
+              </Card>
+              <Btn full kind="primary" onClick={() => { setShowShop(false); setShopStep('browse'); }}>Done</Btn>
+            </div>
+          )}
+        </Overlay>
+      )}
+
+      {/* Booking Modal (Preserved from original) */}
+      {booking && (
+        <Overlay onClose={() => setBooking(null)}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <div style={{ ...tStyle('h3') }}>{t('apt.book')} · {t(`apt.${booking}`)}</div>
+            <button onClick={() => setBooking(null)} style={{ background: 'none', border: 'none', fontSize: 24, color: ETL.color.neutral40 }}>×</button>
+          </div>
+          {booked ? (
+            <div style={{ textAlign: 'center', padding: '20px 0' }}>
+              <div style={{ width: 64, height: 64, borderRadius: 32, background: ETL.color.tertiary, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+                {Icon.check(32, ETL.color.primary)}
+              </div>
+              <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>Appointment confirmed!</div>
+              <div style={{ ...tStyle('body'), color: ETL.color.neutral60, marginTop: 8 }}>We'll notify you 1 hour before the session.</div>
+              <Btn full kind="primary" style={{ marginTop: 24 }} onClick={() => { setBooking(null); setBooked(false); }}>Close</Btn>
+            </div>
+          ) : (
+            <>
+              <div style={{ ...tStyle('label'), color: ETL.color.neutral60, marginBottom: 12 }}>Select Date</div>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 20, overflowX: 'auto' }}>
+                {['Mon 12', 'Tue 13', 'Wed 14', 'Thu 15', 'Fri 16'].map(d => (
+                  <button key={d} style={{ flexShrink: 0, padding: '10px 14px', borderRadius: 12, border: `1.5px solid ${d === 'Thu 15' ? ETL.color.primary : ETL.color.neutral10}`, background: d === 'Thu 15' ? ETL.color.tertiary : '#fff', color: d === 'Thu 15' ? ETL.color.primary : ETL.color.neutral }}>
+                    <div style={{ fontSize: 11, fontWeight: 700 }}>{d.split(' ')[0]}</div>
+                    <div style={{ fontSize: 15, fontWeight: 700 }}>{d.split(' ')[1]}</div>
+                  </button>
+                ))}
+              </div>
+              <div style={{ ...tStyle('label'), color: ETL.color.neutral60, marginBottom: 12 }}>Select Time</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 24 }}>
+                {['09:00', '10:30', '14:00', '15:30', '17:00'].map(tm => (
+                  <Btn key={tm} kind="outlined" size="sm" onClick={() => {}}>{tm}</Btn>
+                ))}
+              </div>
+              <Btn full kind="primary" size="lg" onClick={() => setBooked(true)}>Confirm Booking</Btn>
+            </>
+          )}
+        </Overlay>
+      )}
+
+      <style>{`
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      `}</style>
     </ScrollPage>
+  );
+}
+
+// Sub-components
+
+function Overlay({ children, onClose }) {
+  return (
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex', alignItems: 'flex-end', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' }}>
+      <div onClick={onClose} style={{ position: 'absolute', inset: 0 }} />
+      <div style={{ width: '100%', background: '#fff', borderTopLeftRadius: 32, borderTopRightRadius: 32, padding: '28px 24px 48px', position: 'relative', animation: 'slideUp 0.3s cubic-bezier(0.2, 0.8, 0.3, 1)' }}>
+        <div style={{ width: 40, height: 4, background: ETL.color.neutral10, borderRadius: 2, margin: '-12px auto 20px' }} />
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function PaymentRow({ icon, label, selected = false }) {
+  return (
+    <div style={{
+      padding: 16, borderRadius: 16, border: `1.5px solid ${selected ? ETL.color.primary : ETL.color.neutral10}`,
+      background: selected ? ETL.color.tertiary : '#fff',
+      display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer'
+    }}>
+      <div style={{ fontSize: 24 }}>{icon}</div>
+      <div style={{ flex: 1, ...tStyle('h4'), color: ETL.color.neutral }}>{label}</div>
+      <div style={{ width: 20, height: 20, borderRadius: 10, border: `2px solid ${selected ? ETL.color.primary : ETL.color.neutral20}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {selected && <div style={{ width: 10, height: 10, borderRadius: 5, background: ETL.color.primary }} />}
+      </div>
+    </div>
+  );
+}
+
+function ShopProduct({ icon, name, price, onAdd }) {
+  return (
+    <Card padding={16} elev="sm" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div style={{ width: 80, height: 80, background: ETL.color.surface, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        {icon}
+      </div>
+      <div style={{ flex: 1 }}>
+        <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>{name}</div>
+        <div style={{ ...tStyle('small'), color: ETL.color.primary, fontWeight: 700, marginTop: 4 }}>{price}</div>
+      </div>
+      <Btn kind="primary" size="sm" onClick={onAdd}>Buy</Btn>
+    </Card>
   );
 }
 
@@ -276,15 +432,15 @@ export function BadgeChip({ icon, label, earned, progress }) {
   );
 }
 
-export function StatTile({ big, unit, label, sub }) {
+export function PillarCard({ label, value, sub, icon }) {
   return (
     <Card padding={14} elev="sm">
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 }}>
-        <span style={{ fontSize: 28, fontWeight: 700, color: ETL.color.neutral, fontFamily: ETL.font.family, lineHeight: 1 }}>{big}</span>
-        <span style={{ ...tStyle('small'), color: ETL.color.neutral60, fontWeight: 600 }}>{unit}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+        {icon(18, ETL.color.primary, false)}
+        <div style={{ ...tStyle('label'), color: ETL.color.neutral60, fontSize: 10, textTransform: 'uppercase' }}>{label}</div>
       </div>
-      <div style={{ ...tStyle('small'), color: ETL.color.neutral, fontWeight: 600 }}>{label}</div>
-      {sub && <div style={{ ...tStyle('small'), color: ETL.color.neutral60, fontSize: 11 }}>{sub}</div>}
+      <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>{value}</div>
+      <div style={{ ...tStyle('small'), color: ETL.color.neutral60, fontSize: 11 }}>{sub}</div>
     </Card>
   );
 }
@@ -317,43 +473,5 @@ export function WeightChart() {
         </g>
       ))}
     </svg>
-  );
-}
-
-export function PillarCard({ label, value, sub, icon }) {
-  return (
-    <Card padding={14} elev="sm">
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-        {icon(18, ETL.color.primary, false)}
-        <div style={{ ...tStyle('label'), color: ETL.color.neutral60, fontSize: 10, textTransform: 'uppercase' }}>{label}</div>
-      </div>
-      <div style={{ ...tStyle('h4'), color: ETL.color.neutral }}>{value}</div>
-      <div style={{ ...tStyle('small'), color: ETL.color.neutral60, fontSize: 11 }}>{sub}</div>
-    </Card>
-  );
-}
-
-export function GoalRow({ label, active }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: '#fff', borderRadius: ETL.radius.md, border: `1px solid ${active ? ETL.color.tertiary : ETL.color.neutral10}` }}>
-      <div style={{ width: 20, height: 20, borderRadius: 4, border: `2px solid ${active ? ETL.color.primary : ETL.color.neutral20}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {active && Icon.check(14, ETL.color.primary, false)}
-      </div>
-      <div style={{ ...tStyle('body'), color: active ? ETL.color.neutral : ETL.color.neutral40, fontSize: 14 }}>{label}</div>
-    </div>
-  );
-}
-
-export function ShopItem({ icon, name, desc, price }) {
-  return (
-    <Card padding={14} elev="sm" style={{ flexShrink: 0, width: 160 }}>
-      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>{icon}</div>
-      <div style={{ ...tStyle('h4'), color: ETL.color.neutral, fontSize: 13, marginBottom: 2 }}>{name}</div>
-      <div style={{ ...tStyle('small'), color: ETL.color.neutral60, fontSize: 11, marginBottom: 8, height: 32, overflow: 'hidden' }}>{desc}</div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ ...tStyle('small'), color: ETL.color.primary, fontWeight: 700 }}>{price}</div>
-        <Btn kind="primary" size="sm" style={{ padding: '4px 8px', borderRadius: 8 }}>+</Btn>
-      </div>
-    </Card>
   );
 }
