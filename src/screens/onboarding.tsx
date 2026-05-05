@@ -72,7 +72,7 @@ export function Onboarding({ onComplete }) {
       {/* Body */}
       <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch', display: 'flex', flexDirection: 'column' }}>
         <div key={step} style={{ flex: 1, animation: 'fadeSlide 0.4s cubic-bezier(0.2,0.8,0.3,1)' }}>
-          {step === 0 && <StepLanguage onNext={next}/>}
+          {step === 0 && <StepLanguage onNext={next} onSkip={() => onComplete(data)}/>}
           {step === 1 && <StepWelcome data={data} update={update}/>}
           {step === 2 && <StepIdentity data={data} update={update}/>}
           {step === 3 && <StepStats data={data} update={update}/>}
@@ -111,7 +111,7 @@ export function Onboarding({ onComplete }) {
 }
 
 // Step 0 — Language Selection
-export function StepLanguage({ onNext }) {
+export function StepLanguage({ onNext, onSkip }) {
   const { lang, setLang } = React.useContext(LangContext);
   const langs = [
     { id: 'en', label: 'English', sub: 'Welcome' },
@@ -143,6 +143,12 @@ export function StepLanguage({ onNext }) {
             {lang === l.id && Icon.check(20, ETL.color.primary)}
           </button>
         ))}
+      </div>
+
+      <div style={{ marginTop: 32, textAlign: 'center' }}>
+        <Btn kind="ghost" onClick={onSkip} style={{ color: ETL.color.neutral60 }}>
+          Already have a plan? Skip onboarding
+        </Btn>
       </div>
     </div>
   );
