@@ -1,8 +1,11 @@
+import React from 'react';
+import { ETL } from '../../constants/tokens';
+
 // SVG illustrations & icons — abstract, brand-driven, no stock photos.
 // All take a size prop where useful.
 
 // ── Icons (line, 1.75 stroke) ──────────────────────────────────────
-const Icon = {
+export const Icon = {
   home: (s = 24, c = 'currentColor', filled = false) => filled ? (
     <svg width={s} height={s} viewBox="0 0 24 24" fill={c}>
       <path d="M3.5 11.5L12 4l8.5 7.5V20a1 1 0 0 1-1 1h-4.5v-6.5h-6V21H4.5a1 1 0 0 1-1-1v-8.5z"/>
@@ -149,8 +152,19 @@ const Icon = {
   ),
 };
 
+export function LogoMark({ size = 64 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 88 88" fill="none">
+      <circle cx="44" cy="44" r="40" fill={ETL.color.primary}/>
+      <path d="M28 32 L60 32 M28 44 L52 44 M28 56 L60 56" stroke="#fff" strokeWidth="5" strokeLinecap="round"/>
+      <circle cx="68" cy="20" r="8" fill={ETL.color.secondary}/>
+    </svg>
+  );
+}
+
+
 // ── Hero illustrations (used on onboarding & cards) ────────────────
-function HeroBody({ size = 240 }) {
+export function HeroBody({ size = 240 }) {
   // Abstract figure: torso silhouette with arc + leaf, in brand greens.
   return (
     <svg width={size} height={size} viewBox="0 0 240 240" fill="none">
@@ -186,7 +200,7 @@ function HeroBody({ size = 240 }) {
 }
 
 // Workout thumbnail — abstract motion
-function WorkoutThumb({ w = 80, h = 80, hue = 'green' }) {
+export function WorkoutThumb({ w = 80, h = 80, hue = 'green' }) {
   const fg = hue === 'green' ? '#2D6A4F' : '#F4A261';
   const bg = hue === 'green' ? '#E9F5EF' : '#FCEDDC';
   return (
@@ -204,7 +218,7 @@ function WorkoutThumb({ w = 80, h = 80, hue = 'green' }) {
 }
 
 // Meal illustration — abstract bowl
-function MealThumb({ w = 80, h = 80, kind = 'breakfast' }) {
+export function MealThumb({ w = 80, h = 80, kind = 'breakfast' }) {
   const palette = {
     breakfast: { bg: '#FCEDDC', a: '#F4A261', b: '#2D6A4F', c: '#FFD89B' },
     lunch:     { bg: '#E9F5EF', a: '#2D6A4F', b: '#F4A261', c: '#A8D5BA' },
@@ -228,7 +242,7 @@ function MealThumb({ w = 80, h = 80, kind = 'breakfast' }) {
 }
 
 // Phase emblem — circular badge with phase number
-function PhaseBadge({ size = 80, n = 1, locked = false, label = 'Foundation' }) {
+export function PhaseBadge({ size = 80, n = 1, locked = false, label = 'Foundation' }) {
   const c = locked ? '#9CA8A1' : '#2D6A4F';
   const bg = locked ? '#EDEDEA' : '#E9F5EF';
   return (
@@ -242,7 +256,7 @@ function PhaseBadge({ size = 80, n = 1, locked = false, label = 'Foundation' }) 
 }
 
 // Reward badges
-function RewardBadge({ size = 56, icon = 'leaf', earned = true }) {
+export function RewardBadge({ size = 56, icon = 'leaf', earned = true }) {
   const c = earned ? '#2D6A4F' : '#9CA8A1';
   const bg = earned ? '#E9F5EF' : '#EDEDEA';
   const accent = earned ? '#F4A261' : '#C8C8C5';
@@ -260,5 +274,3 @@ function RewardBadge({ size = 56, icon = 'leaf', earned = true }) {
     </svg>
   );
 }
-
-Object.assign(window, { Icon, HeroBody, WorkoutThumb, MealThumb, PhaseBadge, RewardBadge });

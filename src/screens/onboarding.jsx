@@ -1,7 +1,14 @@
+import React from 'react';
+import { ETL, tStyle } from '../constants/tokens';
+import { useT, LangContext } from '../i18n/index';
+import { Icon } from '../components/art/index';
+import { MuraSeal, HillsBackdrop, ImigongoBand, CoachAvatar, Agaseke } from '../components/art/rw';
+import { ProgressBar, Btn, Chip, Card } from '../components/ui/index';
+
 // Onboarding — coach-led tailoring flow with Rwandan identity.
 // 6 steps: Welcome (Muraho) → Basics → Goals + lifestyle → Eating context → Coach pairing → Plan ready.
 
-function Onboarding({ onComplete }) {
+export function Onboarding({ onComplete }) {
   const t = useT();
   const [step, setStep] = React.useState(0);
   const TOTAL = 11;
@@ -141,9 +148,8 @@ function StepLanguage({ onNext }) {
   );
 }
 
-// Step 0 — Muraho welcome
+// Step 1 — Muraho welcome
 function StepWelcome() {
-  const t = useT();
   const [playing, setPlaying] = React.useState(false);
   const videoRef = React.useRef(null);
 
@@ -672,5 +678,3 @@ function Slider({ value, max, onChange }) {
     </div>
   );
 }
-
-Object.assign(window, { Onboarding });

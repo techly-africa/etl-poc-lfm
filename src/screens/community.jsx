@@ -1,6 +1,14 @@
+import React from 'react';
+import { ETL, tStyle } from '../constants/tokens';
+import { useT } from '../i18n/index';
+import { Icon } from '../components/art/index';
+import { KinyarwandaProverb, CoachAvatar } from '../components/art/rw';
+import { ImigongoDivider } from '../components/gamify/index';
+import { ScreenHeader, ScrollPage, Card, Btn, Chip } from '../components/ui/index';
+
 // Community + Coach Feedback screen — Umuryango ("family/community" in Kinyarwanda)
 
-function CommunityScreen({ onNav }) {
+export function CommunityScreen({ onNav }) {
   const t = useT();
   const [tab, setTab] = React.useState('feed'); // feed | coach
   const [composing, setComposing] = React.useState(false);
@@ -86,7 +94,7 @@ function CommunityScreen({ onNav }) {
   );
 }
 
-function TabPill({ active, onClick, children }) {
+export function TabPill({ active, onClick, children }) {
   return (
     <button onClick={onClick} style={{
       flex: 1, padding: '10px 14px', borderRadius: 999,
@@ -98,7 +106,7 @@ function TabPill({ active, onClick, children }) {
   );
 }
 
-function ComposeChip({ icon, label }) {
+export function ComposeChip({ icon, label }) {
   return (
     <div style={{ flex: 1, padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
       {icon}
@@ -107,7 +115,7 @@ function ComposeChip({ icon, label }) {
   );
 }
 
-function PostCard({ post, onCheer }) {
+export function PostCard({ post, onCheer }) {
   const isCoach = post.who.kind === 'coach';
   return (
     <Card padding={0} elev="sm" style={{ overflow: 'hidden' }}>
@@ -149,7 +157,7 @@ function PostCard({ post, onCheer }) {
   );
 }
 
-function PostAction({ icon, label, active, onClick }) {
+export function PostAction({ icon, label, active, onClick }) {
   return (
     <button onClick={onClick} style={{
       flex: 1, padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
@@ -162,7 +170,7 @@ function PostAction({ icon, label, active, onClick }) {
   );
 }
 
-function CoachInbox() {
+export function CoachInbox() {
   const [thread, setThread] = React.useState(null);
   const messages = [
     { id: 1, from: 'Aline U.', role: 'Lead coach', preview: 'Great squat depth on Monday — let\'s drop weight 5%, focus form for week 2.', time: '2h', unread: true, kind: 'fitness' },
@@ -196,7 +204,7 @@ function CoachInbox() {
   );
 }
 
-function CoachThread({ coach, onBack }) {
+export function CoachThread({ coach, onBack }) {
   const [msgs, setMsgs] = React.useState([
     { from: 'coach', text: 'Mwiriwe Steffi 👋 Saw you finished Day 12 — well done.', time: '2h' },
     { from: 'coach', text: 'Great squat depth on Monday. Let\'s drop weight 5% and focus form for week 2 — quality over quantity.', time: '2h' },
@@ -253,7 +261,7 @@ function CoachThread({ coach, onBack }) {
   );
 }
 
-function ComposePost({ onClose, onPost }) {
+export function ComposePost({ onClose, onPost }) {
   const [text, setText] = React.useState('');
   const [tag, setTag] = React.useState('milestone');
   return (
@@ -279,5 +287,3 @@ function ComposePost({ onClose, onPost }) {
     </div>
   );
 }
-
-Object.assign(window, { CommunityScreen });

@@ -1,9 +1,14 @@
+import React from 'react';
+import { ETL, tStyle } from '../../constants/tokens';
+import { Icon } from '../art/index';
+import { ImigongoBand, CoachAvatar } from '../art/rw';
+
 // Video player + animated demos.
 // We don't have real video files — we render keyframed SVG animations driven by a play head,
 // so they feel like real demo videos: scrubber, play/pause, speed, fullscreen, step markers.
 
 // ─── Player shell ─────────────────────────────────────────────
-function DemoPlayer({ duration, steps, render, title, sub, onClose, accent = ETL.color.primary, autoplay = true }) {
+export function DemoPlayer({ duration, steps, render, title, sub, onClose, accent = ETL.color.primary, autoplay = true }) {
   const [t, setT] = React.useState(0); // seconds
   const [playing, setPlaying] = React.useState(autoplay);
   const [speed, setSpeed] = React.useState(1);
@@ -432,7 +437,7 @@ function Utensil({ kind }) {
 }
 
 // ─── Recipe library ───────────────────────────────────────────
-const RECIPES = {
+export const RECIPES = {
   beanBowl: {
     name: 'Rwandan bean & avocado bowl',
     cuisine: 'East African · 15 min',
@@ -472,7 +477,7 @@ const RECIPES = {
 };
 
 // ─── Exercise library ─────────────────────────────────────────
-const EXERCISE_DEMOS = {
+export const EXERCISE_DEMOS = {
   Squats: {
     pose: 'squat',
     sub: 'Phase 1 · Lower body',
@@ -529,7 +534,7 @@ const EXERCISE_DEMOS = {
 };
 
 // ─── Public openers ───────────────────────────────────────────
-function ExerciseDemoPlayer({ name, onClose }) {
+export function ExerciseDemoPlayer({ name, onClose }) {
   const def = EXERCISE_DEMOS[name] || EXERCISE_DEMOS.Squats;
   return (
     <DemoPlayer
@@ -544,7 +549,7 @@ function ExerciseDemoPlayer({ name, onClose }) {
   );
 }
 
-function RecipeDemoPlayer({ id, onClose }) {
+export function RecipeDemoPlayer({ id, onClose }) {
   const r = RECIPES[id] || RECIPES.beanBowl;
   return (
     <DemoPlayer
@@ -560,7 +565,7 @@ function RecipeDemoPlayer({ id, onClose }) {
 }
 
 // Compact thumbnail-with-play overlay for use in cards
-function VideoThumb({ kind = 'exercise', label, sub, dur, onPlay, w = '100%', h = 110, hue = 'green' }) {
+export function VideoThumb({ kind = 'exercise', label, sub, dur, onPlay, w = '100%', h = 110, hue = 'green' }) {
   const bg = kind === 'recipe'
     ? 'linear-gradient(135deg, #3D2818 0%, #7A3F1F 100%)'
     : (hue === 'orange'
@@ -603,8 +608,3 @@ function VideoThumb({ kind = 'exercise', label, sub, dur, onPlay, w = '100%', h 
     </button>
   );
 }
-
-Object.assign(window, {
-  DemoPlayer, ExerciseDemoPlayer, RecipeDemoPlayer, VideoThumb,
-  EXERCISE_DEMOS, RECIPES,
-});

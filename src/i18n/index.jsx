@@ -1,7 +1,10 @@
+import React from 'react';
+import { ETL } from '../constants/tokens';
+
 // Multi-language support: English (en), French (fr), Kinyarwanda (rw)
 // Exposes: LangContext, LangProvider, useT(), LangSwitcher
 
-const TRANSLATIONS = {
+export const TRANSLATIONS = {
   en: {
     // Nav
     'nav.home': 'Today',
@@ -53,10 +56,6 @@ const TRANSLATIONS = {
     'onboard.coach.sub': 'One fitness coach, one nutritionist — both in Kigali.',
     'onboard.coach.speaks': '🗣 Kinyarwanda',
 
-    'onboard.plan.title': 'Your plan is ready.',
-    'onboard.plan.sub': 'Phase 1 · 28 days · 3 sessions/week',
-    'onboard.plan.signoff': 'Genda neza — go well 🇷🇼',
-    'onboard.plan.cta': 'Start your reset',
     'onboard.plan.overline': 'Murakoze · thank you',
     'onboard.plan.title': '{name}, your plan is being shaped',
     'onboard.plan.sub': '{coach} reviews your details and sends a personalised Phase 1 within 24 hours.',
@@ -221,10 +220,6 @@ const TRANSLATIONS = {
     'onboard.coach.sub': 'Un coach fitness, une nutritionniste — tous deux à Kigali.',
     'onboard.coach.speaks': '🗣 Kinyarwanda',
 
-    'onboard.plan.title': 'Votre plan est prêt.',
-    'onboard.plan.sub': 'Phase 1 · 28 jours · 3 séances/semaine',
-    'onboard.plan.signoff': 'Genda neza — bon courage 🇷🇼',
-    'onboard.plan.cta': 'Commencer votre reset',
     'onboard.plan.overline': 'Murakoze · merci',
     'onboard.plan.title': '{name}, votre plan est en cours de préparation',
     'onboard.plan.sub': '{coach} examine vos détails et enverra une Phase 1 personnalisée sous 24 heures.',
@@ -290,7 +285,7 @@ const TRANSLATIONS = {
     'move.loc6': 'Collines de Nyamirambo',
     'move.complete.sub': 'Wabikoze neza!',
     'move.complete': 'Excellent travail!',
-    'move.complete.body': 'Vous avez bougé avec intention aujourd\'hui. C\'est ça le reset.',
+    'move.complete.body': 'Vous avez bougé with intention aujourd\'hui. C\'est ça le reset.',
 
     // Nourish
     'nourish.sub': '🇷🇼 Indyo yawe · Fenêtre repas 12:00–20:00',
@@ -388,10 +383,6 @@ const TRANSLATIONS = {
     'onboard.coach.sub': 'Umukurikiranira wa fitness n\'inzobere mu biribwa — bombi i Kigali.',
     'onboard.coach.speaks': '🗣 Ikinyarwanda',
 
-    'onboard.plan.title': 'Gahunda yawe iri itegurwa.',
-    'onboard.plan.sub': 'Phase 1 · Iminsi 28 · Ibikorwa 3/icyumweru',
-    'onboard.plan.signoff': 'Genda neza 🇷🇼',
-    'onboard.plan.cta': 'Tangira reset yawe',
     'onboard.plan.overline': 'Murakoze',
     'onboard.plan.title': '{name}, gahunda yawe iri gutegurwa',
     'onboard.plan.sub': '{coach} ari gusuzuma amakuru yawe kandi azakoherereza Phase 1 yihariye mu masaha 24.',
@@ -511,9 +502,9 @@ function interpolate(str, vars) {
   return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] !== undefined ? vars[k] : `{${k}}`);
 }
 
-const LangContext = React.createContext({ lang: 'en', setLang: () => {} });
+export const LangContext = React.createContext({ lang: 'en', setLang: () => {} });
 
-function LangProvider({ children }) {
+export function LangProvider({ children }) {
   const saved = (() => {
     try { return localStorage.getItem('etl_lang') || 'en'; } catch { return 'en'; }
   })();
@@ -529,7 +520,7 @@ function LangProvider({ children }) {
   );
 }
 
-function useT() {
+export function useT() {
   const { lang } = React.useContext(LangContext);
   return (key, vars) => {
     const dict = TRANSLATIONS[lang] || TRANSLATIONS.en;
@@ -539,7 +530,7 @@ function useT() {
 }
 
 // Language switcher — compact pill trio
-function LangSwitcher({ style = {} }) {
+export function LangSwitcher({ style = {} }) {
   const { lang, setLang } = React.useContext(LangContext);
   const langs = [
     { id: 'en', label: 'EN' },
@@ -575,5 +566,3 @@ function LangSwitcher({ style = {} }) {
     </div>
   );
 }
-
-Object.assign(window, { LangContext, LangProvider, useT, LangSwitcher, TRANSLATIONS });

@@ -1,6 +1,14 @@
+import React from 'react';
+import { ETL, tStyle } from '../constants/tokens';
+import { useT } from '../i18n/index';
+import { Icon, MealThumb } from '../components/art/index';
+import { KinyarwandaProverb } from '../components/art/rw';
+import { ScreenHeader, ScrollPage, Card, MacroRing, ProgressBar, SectionTitle, Btn } from '../components/ui/index';
+import { RecipeDemoPlayer, VideoThumb } from '../components/video/index';
+
 // Nourish screen — IF-aware nutrition timeline.
 
-function NourishScreen({ onNav }) {
+export function NourishScreen({ onNav }) {
   const t = useT();
   const [expanded, setExpanded] = React.useState(null);
   const [recipe, setRecipe] = React.useState(null);
@@ -118,7 +126,7 @@ function NourishScreen({ onNav }) {
   );
 }
 
-function MacroBar({ label, cur, max, color }) {
+export function MacroBar({ label, cur, max, color }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
@@ -130,7 +138,7 @@ function MacroBar({ label, cur, max, color }) {
   );
 }
 
-function MealRow({ meal, expanded, onToggle, onPlay }) {
+export function MealRow({ meal, expanded, onToggle, onPlay }) {
   const isOptional = meal.status === 'optional';
   return (
     <div style={{ background: '#fff', borderRadius: ETL.radius.lg, overflow: 'hidden',
@@ -169,7 +177,7 @@ function MealRow({ meal, expanded, onToggle, onPlay }) {
   );
 }
 
-function Pill({ children, color = 'neutral' }) {
+export function Pill({ children, color = 'neutral' }) {
   const palettes = {
     neutral: { bg: ETL.color.neutral10, fg: ETL.color.neutral80 },
     primary: { bg: ETL.color.tertiary, fg: ETL.color.primary },
@@ -182,5 +190,3 @@ function Pill({ children, color = 'neutral' }) {
     }}>{children}</span>
   );
 }
-
-Object.assign(window, { NourishScreen });

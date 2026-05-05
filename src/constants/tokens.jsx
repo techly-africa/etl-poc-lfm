@@ -1,7 +1,7 @@
 // Design tokens — ETL Body Reset
-// Single source of truth, exported to window for cross-file access.
+// Single source of truth.
 
-const ETL = {
+export const ETL = {
   color: {
     primary: '#2D6A4F',      // deep forest
     primaryDark: '#1F4D3A',
@@ -44,7 +44,7 @@ const ETL = {
 };
 
 // Typography helpers — apply a token style on any element.
-const tStyle = (key) => {
+export const tStyle = (key) => {
   const t = ETL.font[key];
   return {
     fontFamily: ETL.font.family,
@@ -54,5 +54,3 @@ const tStyle = (key) => {
     letterSpacing: `${t.ls}px`,
   };
 };
-
-Object.assign(window, { ETL, tStyle });

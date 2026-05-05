@@ -1,6 +1,14 @@
+import React from 'react';
+import { ETL, tStyle } from '../constants/tokens';
+import { useT } from '../i18n/index';
+import { Icon, PhaseBadge, WorkoutThumb } from '../components/art/index';
+import { HillsBackdrop, ImigongoBand, CoachAvatar } from '../components/art/rw';
+import { Btn, Card, ProgressBar, ArcProgress, ScrollPage, SectionTitle, MacroRing } from '../components/ui/index';
+import { LevelMeter, DailyQuests, XPBurst, AgasekePopper, RWStreakFlame, ImigongoDivider, rwGreeting } from '../components/gamify/index';
+
 // Home dashboard ("Today") — Rwandan-inflected with gamification.
 
-function HomeScreen({ user, onNav, onStartWorkout }) {
+export function HomeScreen({ user, onNav, onStartWorkout }) {
   const [habits, setHabits] = React.useState({
     workout: false, breakfast: false, water: 1, walk: false,
   });
@@ -198,7 +206,7 @@ function HomeScreen({ user, onNav, onStartWorkout }) {
       <div style={{ padding: '0 20px 28px' }}>
         <Card padding={0} elev="sm" onClick={() => onNav('community')} style={{ overflow: 'hidden', cursor: 'pointer' }}>
           <div style={{ background: ETL.color.tertiary, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <RwandaMapBadge size={22} color={ETL.color.primary} bg="transparent"/>
+            {Icon.home(16, ETL.color.primary)}
             <span style={{ ...tStyle('overline'), color: ETL.color.primary, textTransform: 'uppercase', fontWeight: 700 }}>{t('home.community.label')}</span>
           </div>
           <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -219,11 +227,7 @@ function HomeScreen({ user, onNav, onStartWorkout }) {
   );
 }
 
-function StreakBadge({ n }) {
-  return <RWStreakFlame n={n}/>;
-}
-
-function HabitRow({ icon, label, sub, checked, progress, onClick }) {
+export function HabitRow({ icon, label, sub, checked, progress, onClick }) {
   return (
     <Card padding={0} elev="sm" onClick={onClick} style={{ overflow: 'hidden' }}>
       <div style={{ padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -242,7 +246,7 @@ function HabitRow({ icon, label, sub, checked, progress, onClick }) {
   );
 }
 
-function Checkbox({ checked, progress }) {
+export function Checkbox({ checked, progress }) {
   return (
     <div style={{
       width: 28, height: 28, borderRadius: 14,
@@ -266,7 +270,7 @@ function Checkbox({ checked, progress }) {
   );
 }
 
-function AvatarStack({ count = 3 }) {
+export function AvatarStack({ count = 3 }) {
   const colors = ['#2D6A4F', '#F4A261', '#7A3F1F', '#3F8A68'];
   return (
     <div style={{ display: 'flex' }}>
@@ -283,19 +287,3 @@ function AvatarStack({ count = 3 }) {
     </div>
   );
 }
-
-function ScrollPage({ children, bg = ETL.color.surface }) {
-  return (
-    <div style={{ 
-      width: '100%', 
-      height: '100%', 
-      background: bg, 
-      overflow: 'auto', 
-      paddingTop: 56, 
-      paddingBottom: 100, // Space for BottomNav
-      WebkitOverflowScrolling: 'touch' // Smooth scroll for iOS
-    }}>{children}</div>
-  );
-}
-
-Object.assign(window, { HomeScreen, ScrollPage, StreakBadge, HabitRow, Checkbox, AvatarStack });

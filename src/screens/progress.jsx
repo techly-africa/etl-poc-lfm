@@ -1,6 +1,14 @@
-function MeScreen({ user }) {
+import React from 'react';
+import { ETL, tStyle } from '../constants/tokens';
+import { useT } from '../i18n/index';
+import { Icon, RewardBadge } from '../components/art/index';
+import { ImigongoCorner } from '../components/art/rw';
+import { ScrollPage, SectionTitle, Card, Btn, ProgressBar, Pill } from '../components/ui/index';
+
+// Me screen — progress + profile + metrics.
+
+export function MeScreen({ user }) {
   const t = useT();
-  const ScreenHeader = window.ScreenHeader;
   const phases = [
     { n: 1, key: 'phase.1', state: 'active',   sub: 'Day 12 / 28', stat: '8 sessions · 4kg lighter mindset' },
     { n: 2, key: 'phase.2', state: 'locked',   sub: '4 weeks',      stat: 'Strength + moderate cardio' },
@@ -120,7 +128,7 @@ function MeScreen({ user }) {
   );
 }
 
-function PhaseRow({ n, key, state, sub, stat }) {
+export function PhaseRow({ n, key, state, sub, stat }) {
   const t = useT();
   const active = state === 'active';
   const locked = state === 'locked';
@@ -163,7 +171,7 @@ function PhaseRow({ n, key, state, sub, stat }) {
   );
 }
 
-function BadgeChip({ icon, label, earned, progress }) {
+export function BadgeChip({ icon, label, earned, progress }) {
   return (
     <div style={{
       flexShrink: 0, width: 116,
@@ -179,7 +187,7 @@ function BadgeChip({ icon, label, earned, progress }) {
   );
 }
 
-function StatTile({ big, unit, label, sub }) {
+export function StatTile({ big, unit, label, sub }) {
   return (
     <Card padding={14} elev="sm">
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 }}>
@@ -192,7 +200,7 @@ function StatTile({ big, unit, label, sub }) {
   );
 }
 
-function WeightChart() {
+export function WeightChart() {
   const data = [78.4, 78.2, 78.3, 77.9, 77.7, 77.8, 77.5, 77.4, 77.2, 77.3, 77.1, 77.0];
   const min = Math.min(...data) - 0.2, max = Math.max(...data) + 0.2;
   const W = 320, H = 100, P = 8;
@@ -223,7 +231,7 @@ function WeightChart() {
   );
 }
 
-function PillarCard({ label, value, sub, icon }) {
+export function PillarCard({ label, value, sub, icon }) {
   return (
     <Card padding={14} elev="sm">
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -236,7 +244,7 @@ function PillarCard({ label, value, sub, icon }) {
   );
 }
 
-function GoalRow({ label, active }) {
+export function GoalRow({ label, active }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: '#fff', borderRadius: ETL.radius.md, border: `1px solid ${active ? ETL.color.tertiary : ETL.color.neutral10}` }}>
       <div style={{ width: 20, height: 20, borderRadius: 4, border: `2px solid ${active ? ETL.color.primary : ETL.color.neutral20}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -246,6 +254,3 @@ function GoalRow({ label, active }) {
     </div>
   );
 }
-
-Object.assign(window, { MeScreen });
-

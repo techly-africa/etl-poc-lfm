@@ -1,8 +1,11 @@
+import React from 'react';
+import { ETL, tStyle } from '../../constants/tokens';
+
 // Rwanda-inflected art: imigongo geometric pattern, agaseke basket, hills.
 // Enhanced: richer visuals, new components for deeper cultural presence.
 
 // Imigongo — traditional Rwandan geometric pattern (diamond/spiral motifs).
-function ImigongoBand({ width = '100%', height = 28, palette = 'forest' }) {
+export function ImigongoBand({ width = '100%', height = 28, palette = 'forest' }) {
   const colors = {
     forest: { bg: '#1F4D3A', a: '#F4A261', b: '#E9F5EF', c: '#0E2A1F' },
     warm:   { bg: '#3D2818', a: '#E8B57A', b: '#F4E4D2', c: '#7A3F1F' },
@@ -29,7 +32,7 @@ function ImigongoBand({ width = '100%', height = 28, palette = 'forest' }) {
 }
 
 // Imigongo corner accent — decorative quarter-pattern for card corners
-function ImigongoCorner({ size = 48, palette = 'forest', flip = false }) {
+export function ImigongoCorner({ size = 48, palette = 'forest', flip = false }) {
   const colors = {
     forest: { bg: '#1F4D3A', a: '#F4A261', b: '#E9F5EF' },
     light:  { bg: '#E9F5EF', a: '#2D6A4F', b: '#F4A261' },
@@ -55,7 +58,7 @@ function ImigongoCorner({ size = 48, palette = 'forest', flip = false }) {
 }
 
 // Agaseke (peace basket) — woven basket icon
-function Agaseke({ size = 80, accent = '#F4A261' }) {
+export function Agaseke({ size = 80, accent = '#F4A261' }) {
   return (
     <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
       {/* lid (cone) */}
@@ -83,7 +86,7 @@ function Agaseke({ size = 80, accent = '#F4A261' }) {
 
 // Rolling hills silhouette — "Land of a Thousand Hills" backdrop.
 // Enhanced with richer layering, terraced hills, and dramatic sky.
-function HillsBackdrop({ width = '100%', height = 180 }) {
+export function HillsBackdrop({ width = '100%', height = 180 }) {
   const W = 390, H = 180; // Fixed viewbox base
   return (
     <svg width={width} height={height} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" style={{ display: 'block' }}>
@@ -133,7 +136,7 @@ function HillsBackdrop({ width = '100%', height = 180 }) {
 }
 
 // Coach avatar — warm earth tones with Kente-inspired collar
-function CoachAvatar({ size = 56, kind = 'fitness' }) {
+export function CoachAvatar({ size = 56, kind = 'fitness' }) {
   const skin = '#8B5A3C';
   const accent = kind === 'fitness' ? '#2D6A4F' : '#F4A261';
   const accentB = kind === 'fitness' ? '#F4A261' : '#2D6A4F';
@@ -161,7 +164,7 @@ function CoachAvatar({ size = 56, kind = 'fitness' }) {
 }
 
 // Greeting seal — circular, woven ring effect
-function MuraSeal({ size = 72 }) {
+export function MuraSeal({ size = 72 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 72 72">
       <circle cx="36" cy="36" r="34" fill="#1F4D3A"/>
@@ -184,7 +187,7 @@ function MuraSeal({ size = 72 }) {
 }
 
 // Rwanda Map Badge — abstract outline of Rwanda as a badge/icon
-function RwandaMapBadge({ size = 48, color = '#2D6A4F', bg = '#E9F5EF' }) {
+export function RwandaMapBadge({ size = 48, color = '#2D6A4F', bg = '#E9F5EF' }) {
   // Simplified Rwanda outline path (normalised to 40×36 viewport)
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
@@ -204,7 +207,7 @@ function RwandaMapBadge({ size = 48, color = '#2D6A4F', bg = '#E9F5EF' }) {
 }
 
 // Kinyarwanda proverb display block
-function KinyarwandaProverb({ rw, en, style = {} }) {
+export function KinyarwandaProverb({ rw, en, style = {} }) {
   return (
     <div style={{
       padding: '16px 20px',
@@ -227,15 +230,10 @@ function KinyarwandaProverb({ rw, en, style = {} }) {
 }
 
 // Hills strip — used as header band
-function HillsStrip({ height = 70 }) {
+export function HillsStrip({ height = 70 }) {
   return (
     <div style={{ position: 'relative', width: '100%', height, overflow: 'hidden', borderRadius: 12 }}>
       <HillsBackdrop width={400} height={height}/>
     </div>
   );
 }
-
-Object.assign(window, {
-  ImigongoBand, ImigongoCorner, Agaseke, HillsBackdrop, CoachAvatar, MuraSeal,
-  RwandaMapBadge, KinyarwandaProverb, HillsStrip,
-});

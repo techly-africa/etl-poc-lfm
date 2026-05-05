@@ -1,7 +1,13 @@
+import React from 'react';
+import { ETL, tStyle } from '../../constants/tokens';
+import { useT } from '../../i18n/index';
+import { Icon } from '../art/index';
+import { ImigongoBand } from '../art/rw';
+
 // Shared UI primitives — buttons, chips, progress, nav.
 // Enhanced with Rwandan visual identity: Imigongo nav accent, richer screen headers.
 
-function Btn({ kind = 'primary', children, onClick, full = false, size = 'md', icon, disabled = false, style = {} }) {
+export function Btn({ kind = 'primary', children, onClick, full = false, size = 'md', icon, disabled = false, style = {} }) {
   const sizes = {
     sm: { h: 36, px: 14, fs: 13, fw: 600 },
     md: { h: 48, px: 20, fs: 15, fw: 600 },
@@ -50,7 +56,7 @@ function Btn({ kind = 'primary', children, onClick, full = false, size = 'md', i
   );
 }
 
-function Chip({ children, active = false, onClick, locked = false, size = 'md', accent = 'primary', style = {} }) {
+export function Chip({ children, active = false, onClick, locked = false, size = 'md', accent = 'primary', style = {} }) {
   const sizes = { sm: { h: 28, px: 10, fs: 12 }, md: { h: 36, px: 14, fs: 13 } }[size];
   const accentColor = accent === 'orange' ? ETL.color.secondary : ETL.color.primary;
   return (
@@ -70,7 +76,7 @@ function Chip({ children, active = false, onClick, locked = false, size = 'md', 
   );
 }
 
-function ProgressBar({ value, max = 100, color = ETL.color.primary, height = 8, bg = ETL.color.tertiaryDeep }) {
+export function ProgressBar({ value, max = 100, color = ETL.color.primary, height = 8, bg = ETL.color.tertiaryDeep }) {
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
   return (
     <div style={{ width: '100%', height, background: bg, borderRadius: height, overflow: 'hidden' }}>
@@ -82,7 +88,7 @@ function ProgressBar({ value, max = 100, color = ETL.color.primary, height = 8, 
   );
 }
 
-function ProgressDots({ count, current }) {
+export function ProgressDots({ count, current }) {
   return (
     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
       {Array.from({ length: count }).map((_, i) => (
@@ -97,8 +103,7 @@ function ProgressDots({ count, current }) {
   );
 }
 
-// Donut / arc progress
-function ArcProgress({ value, max = 100, size = 120, stroke = 12, color = ETL.color.primary, bg = ETL.color.tertiaryDeep, children }) {
+export function ArcProgress({ value, max = 100, size = 120, stroke = 12, color = ETL.color.primary, bg = ETL.color.tertiaryDeep, children }) {
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   const pct = Math.min(1, value / max);
@@ -118,8 +123,7 @@ function ArcProgress({ value, max = 100, size = 120, stroke = 12, color = ETL.co
   );
 }
 
-// Macro ring — three concentric arcs
-function MacroRing({ size = 88, protein = 0.7, carbs = 0.5, fat = 0.4 }) {
+export function MacroRing({ size = 88, protein = 0.7, carbs = 0.5, fat = 0.4 }) {
   const stroke = 6;
   const gap = 3;
   const arc = (r, p, c) => {
@@ -141,8 +145,7 @@ function MacroRing({ size = 88, protein = 0.7, carbs = 0.5, fat = 0.4 }) {
   );
 }
 
-// Card — base surface
-function Card({ children, padding = 16, bg = '#fff', radius = ETL.radius.lg, style = {}, onClick, elev = 'sm' }) {
+export function Card({ children, padding = 16, bg = '#fff', radius = ETL.radius.lg, style = {}, onClick, elev = 'sm' }) {
   return (
     <div onClick={onClick} style={{
       background: bg, borderRadius: radius, padding,
@@ -154,8 +157,7 @@ function Card({ children, padding = 16, bg = '#fff', radius = ETL.radius.lg, sty
   );
 }
 
-// Section header — with optional Kinyarwanda sub
-function SectionTitle({ children, sub, rw, style = {} }) {
+export function SectionTitle({ children, sub, rw, style = {} }) {
   return (
     <div style={{ ...style }}>
       {rw && (
@@ -169,8 +171,7 @@ function SectionTitle({ children, sub, rw, style = {} }) {
   );
 }
 
-// Bottom nav — Rwandan identity: Imigongo top-border + active pill
-function BottomNav({ active, onChange }) {
+export function BottomNav({ active, onChange }) {
   const t = useT();
   const tabs = [
     { id: 'home',      labelKey: 'nav.home',      icon: 'home' },
@@ -218,8 +219,7 @@ function BottomNav({ active, onChange }) {
   );
 }
 
-// Top bar — screen header with optional Imigongo divider
-function ScreenHeader({ title, sub, action, leading, imigongo = false }) {
+export function ScreenHeader({ title, sub, action, leading, imigongo = false }) {
   return (
     <div>
       {imigongo && <ImigongoBand width={390} height={8} palette="light"/>}
@@ -235,6 +235,53 @@ function ScreenHeader({ title, sub, action, leading, imigongo = false }) {
   );
 }
 
-Object.assign(window, {
-  Btn, Chip, ProgressBar, ProgressDots, ArcProgress, MacroRing, Card, SectionTitle, BottomNav, ScreenHeader,
-});
+export function ScrollPage({ children, bg = ETL.color.surface }) {
+  return (
+    <div style={{ 
+      width: '100%', 
+      height: '100%', 
+      background: bg, 
+      overflow: 'auto', 
+      paddingTop: 56, 
+      paddingBottom: 100, // Space for BottomNav
+      WebkitOverflowScrolling: 'touch' // Smooth scroll for iOS
+    }}>{children}</div>
+  );
+}
+
+export function Pill({ children, color = 'neutral', style = {} }) {
+  const colors = {
+    primary:   { bg: ETL.color.tertiary,  fg: ETL.color.primary },
+    orange:    { bg: '#FCEDDC',           fg: '#B86E20' },
+    neutral:   { bg: ETL.color.neutral10, fg: ETL.color.neutral60 },
+  }[color] || { bg: ETL.color.neutral10, fg: ETL.color.neutral60 };
+  return (
+    <div style={{
+      padding: '4px 10px', borderRadius: 6,
+      background: colors.bg, color: colors.fg,
+      ...tStyle('overline'), fontSize: 10, fontWeight: 700,
+      display: 'inline-block',
+      ...style,
+    }}>{children}</div>
+  );
+}
+
+export function IOSDevice({ children, width = 390, height = 844 }) {
+  return (
+    <div style={{
+      width, height, position: 'relative',
+      borderRadius: 44,
+      background: '#000',
+      padding: 12,
+      boxShadow: '0 50px 100px rgba(0,0,0,0.5)',
+      border: '8px solid #1c1c1e',
+    }}>
+      <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 140, height: 32, background: '#000', borderBottomLeftRadius: 18, borderBottomRightRadius: 18, zIndex: 100 }}>
+        <div style={{ position: 'absolute', right: 28, top: 12, width: 6, height: 6, borderRadius: 3, background: '#1c1c1e' }}/>
+      </div>
+      <div style={{ width: '100%', height: '100%', background: '#fff', borderRadius: 32, overflow: 'hidden', position: 'relative' }}>
+        {children}
+      </div>
+    </div>
+  );
+}

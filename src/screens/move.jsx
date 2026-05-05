@@ -1,6 +1,13 @@
+import React from 'react';
+import { ETL, tStyle } from '../constants/tokens';
+import { useT } from '../i18n/index';
+import { Icon, PhaseBadge, WorkoutThumb, RewardBadge } from '../components/art/index';
+import { EXERCISE_DEMOS, ExerciseDemoPlayer, VideoThumb } from '../components/video/index';
+import { ScreenHeader, ScrollPage, Btn, Card, ProgressBar, ArcProgress, SectionTitle } from '../components/ui/index';
+
 // Move screen (Fitness) — phases + week selector + workout cards.
 
-function MoveScreen({ onStartWorkout }) {
+export function MoveScreen({ onStartWorkout }) {
   const t = useT();
   const [phase, setPhase] = React.useState(1);
   const [week, setWeek] = React.useState(1);
@@ -19,8 +26,6 @@ function MoveScreen({ onStartWorkout }) {
     { day: t('move.day5'),  title: t('move.title5'), dur: 35, groups: [t('move.group5a'),t('move.group5b')], status: 'today', loc: t('move.loc5') },
     { day: t('move.day6'),  title: t('move.title6'), dur: 30, groups: [t('move.group6a'),t('move.group6b')], status: 'upcoming', loc: t('move.loc6') },
   ];
-
-  const ScreenHeader = window.ScreenHeader;
 
   return (
     <ScrollPage>
@@ -135,7 +140,7 @@ function MoveScreen({ onStartWorkout }) {
   );
 }
 
-function WorkoutCard({ day, title, dur, groups, status, loc, onStart }) {
+export function WorkoutCard({ day, title, dur, groups, status, loc, onStart }) {
   const styles = {
     completed: { bg: ETL.color.tertiary, border: 'transparent', muted: true },
     today:     { bg: '#fff', border: ETL.color.primary, muted: false },
@@ -179,7 +184,7 @@ function WorkoutCard({ day, title, dur, groups, status, loc, onStart }) {
 }
 
 // Workout detail / in-session screen — overlay
-function WorkoutDetail({ onClose, onComplete }) {
+export function WorkoutDetail({ onClose, onComplete }) {
   const [exIdx, setExIdx] = React.useState(0);
   const [resting, setResting] = React.useState(false);
   const [done, setDone] = React.useState(false);
@@ -260,7 +265,7 @@ function WorkoutDetail({ onClose, onComplete }) {
   );
 }
 
-function ExerciseCard({ ex, idx, onLog }) {
+export function ExerciseCard({ ex, idx, onLog }) {
   const [reps, setReps] = React.useState(ex.reps);
   const [demo, setDemo] = React.useState(false);
   return (
@@ -297,7 +302,7 @@ function ExerciseCard({ ex, idx, onLog }) {
   );
 }
 
-function RestTimer() {
+export function RestTimer() {
   const [remaining, setRemaining] = React.useState(60);
   React.useEffect(() => {
     const id = setInterval(() => setRemaining(r => Math.max(0, r - 1)), 100);
@@ -314,7 +319,7 @@ function RestTimer() {
   );
 }
 
-function CompletionScreen({ onClose }) {
+export function CompletionScreen({ onClose }) {
   const [confetti] = React.useState(() => Array.from({ length: 28 }, (_, i) => ({
     x: Math.random() * 100, delay: Math.random() * 0.6, color: [ETL.color.primary, ETL.color.secondary, ETL.color.primaryLight, '#7DD957'][i % 4],
     size: 6 + Math.random() * 8, dur: 1.5 + Math.random() * 1.5, rot: Math.random() * 360,
@@ -375,5 +380,3 @@ function CompletionScreen({ onClose }) {
     </div>
   );
 }
-
-Object.assign(window, { MoveScreen, WorkoutDetail });

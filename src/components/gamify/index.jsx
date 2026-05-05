@@ -1,8 +1,13 @@
+import React from 'react';
+import { ETL, tStyle } from '../../constants/tokens';
+import { Icon, RewardBadge } from '../art/index';
+import { ImigongoBand, HillsBackdrop, Agaseke } from '../art/rw';
+
 // Gamification + Rwandan visual layer.
 // Provides: XP burst, level meter (Inkindi → Igisirimba → Intare), animated streak flame,
 // imigongo dividers, Kinyarwanda greeting helper, daily quest ribbon, agaseke reward popper.
 
-const RW_LEVELS = [
+export const RW_LEVELS = [
   { n: 1, name: 'Inkindi',   meaning: 'Spark',     min: 0,    max: 250 },
   { n: 2, name: 'Inyenyeri', meaning: 'Star',      min: 250,  max: 600 },
   { n: 3, name: 'Igisirimba',meaning: 'Mountain',  min: 600,  max: 1100 },
@@ -10,19 +15,19 @@ const RW_LEVELS = [
   { n: 5, name: 'Umugani',   meaning: 'Legend',    min: 2000, max: 3000 },
 ];
 
-function rwGreeting(hour) {
+export function rwGreeting(hour) {
   const h = hour ?? new Date().getHours();
   if (h < 11)  return { rw: 'Mwaramutse',  en: 'Good morning' };
   if (h < 17)  return { rw: 'Mwiriwe',     en: 'Good afternoon' };
   return         { rw: 'Muramuke',    en: 'Good evening' };
 }
 
-function levelFor(xp) {
+export function levelFor(xp) {
   return RW_LEVELS.find(l => xp >= l.min && xp < l.max) || RW_LEVELS[RW_LEVELS.length-1];
 }
 
 // Animated XP gain burst (toast)
-function XPBurst({ amount, label, onDone }) {
+export function XPBurst({ amount, label, onDone }) {
   React.useEffect(() => {
     const id = setTimeout(onDone, 1800);
     return () => clearTimeout(id);
@@ -55,7 +60,7 @@ function XPBurst({ amount, label, onDone }) {
 }
 
 // Animated streak flame — pulses when day count incremented today
-function RWStreakFlame({ n, today = true }) {
+export function RWStreakFlame({ n, today = true }) {
   return (
     <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', gap: 8,
       padding: '8px 14px 8px 10px', borderRadius: 999,
@@ -82,12 +87,12 @@ function RWStreakFlame({ n, today = true }) {
 }
 
 // Imigongo divider — slim band of diamond pattern
-function ImigongoDivider({ palette = 'light', height = 12 }) {
+export function ImigongoDivider({ palette = 'light', height = 12 }) {
   return <div style={{ margin: '4px 0' }}><ImigongoBand width={420} height={height} palette={palette}/></div>;
 }
 
 // Level meter — XP toward next Rwandan-named level
-function LevelMeter({ xp = 340 }) {
+export function LevelMeter({ xp = 340 }) {
   const lvl = levelFor(xp);
   const next = RW_LEVELS[lvl.n] || lvl;
   const pct = ((xp - lvl.min) / (lvl.max - lvl.min)) * 100;
@@ -96,7 +101,7 @@ function LevelMeter({ xp = 340 }) {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
         <ImigongoBand width={400} height={6} palette="forest"/>
       </div>
-      <div style={{ paddingTop: 4, display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div style={{ paddingTop: 4, display: 'flex', alignItems: 'baseline', gap: 12 }}>
         <div style={{
           width: 44, height: 44, borderRadius: 22,
           background: `linear-gradient(135deg, ${ETL.color.primary} 0%, ${ETL.color.primaryLight || '#3F8A68'} 100%)`,
@@ -131,7 +136,7 @@ function LevelMeter({ xp = 340 }) {
 }
 
 // Daily quest ribbon — three quests, each gives XP. Animated checkmark on tap.
-function DailyQuests({ quests, onComplete }) {
+export function DailyQuests({ quests, onComplete }) {
   return (
     <div style={{ background: '#fff', borderRadius: ETL.radius.lg, overflow: 'hidden', boxShadow: ETL.shadow.sm }}>
       <div style={{ padding: '12px 14px 8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -176,7 +181,7 @@ function DailyQuests({ quests, onComplete }) {
 }
 
 // Agaseke reward popper — confetti + opening basket on milestone
-function AgasekePopper({ message, onClose }) {
+export function AgasekePopper({ message, onClose }) {
   return (
     <div style={{ position: 'absolute', inset: 0, zIndex: 150, background: 'rgba(14,42,31,0.85)', backdropFilter: 'blur(8px)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 24,
@@ -231,15 +236,10 @@ function AgasekePopper({ message, onClose }) {
 }
 
 // Hills strip — used as a header band on Home (sense of place)
-function HillsStrip({ height = 70 }) {
+export function HillsStrip({ height = 70 }) {
   return (
     <div style={{ position: 'relative', width: '100%', height, overflow: 'hidden', borderRadius: 12 }}>
       <HillsBackdrop width={400} height={height}/>
     </div>
   );
 }
-
-Object.assign(window, {
-  RW_LEVELS, rwGreeting, levelFor,
-  XPBurst, RWStreakFlame, ImigongoDivider, LevelMeter, DailyQuests, AgasekePopper, HillsStrip,
-});
