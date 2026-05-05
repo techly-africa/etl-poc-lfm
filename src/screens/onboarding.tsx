@@ -70,7 +70,7 @@ export function Onboarding({ onComplete }) {
       )}
 
       {/* Body */}
-      <div style={{ flex: 1, overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', WebkitOverflowScrolling: 'touch', display: 'flex', flexDirection: 'column' }}>
         <div key={step} style={{ flex: 1, animation: 'fadeSlide 0.4s cubic-bezier(0.2,0.8,0.3,1)' }}>
           {step === 0 && <StepLanguage onNext={next}/>}
           {step === 1 && <StepWelcome data={data} update={update}/>}

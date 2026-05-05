@@ -48,15 +48,18 @@ export default function App() {
   return (
     <LangProvider>
       <div style={{
-        width: '100vw', minHeight: '100vh',
+        width: '100vw', 
+        minHeight: '100vh',
         background: isMobile ? ETL.color.surface : '#1a1a18',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
         padding: isMobile ? 0 : '40px 20px',
         fontFamily: ETL.font.family,
         boxSizing: 'border-box',
         flexDirection: 'column',
         gap: 20,
-        overflow: 'hidden'
+        overflowX: 'hidden'
       }}>
         {tweaks.view === 'prototype' && <Prototype tweaks={tweaks} isMobile={isMobile} />}
         {tweaks.view === 'system' && <SystemPanel />}
@@ -122,8 +125,17 @@ function Prototype({ tweaks, isMobile }) {
   })();
 
   const inner = (
-    <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: ETL.color.surface }}>
-      {screen}
+    <div style={{ 
+      position: 'relative', 
+      width: '100%', 
+      minHeight: isMobile ? '100vh' : '100%', 
+      display: 'flex',
+      flexDirection: 'column',
+      background: ETL.color.surface 
+    }}>
+      <div style={{ flex: 1, position: 'relative' }}>
+        {screen}
+      </div>
       {stage === 'app' && <BottomNav active={tab} onChange={setTab} />}
       {workoutOpen && <WorkoutDetail onClose={closeWorkout} onComplete={closeWorkout} />}
     </div>

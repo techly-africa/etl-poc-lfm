@@ -315,12 +315,15 @@ export function ScrollPage({ children, bg = ETL.color.surface }: { children: Rea
   return (
     <div style={{ 
       width: '100%', 
-      height: '100%', 
+      height: '100vh', 
       background: bg, 
-      overflow: 'auto', 
-      paddingTop: 56, 
-      paddingBottom: 100, // Space for BottomNav
-      WebkitOverflowScrolling: 'touch' // Smooth scroll for iOS
+      overflowY: 'auto', 
+      overflowX: 'hidden',
+      paddingTop: 10, 
+      paddingBottom: 120, // Space for BottomNav
+      WebkitOverflowScrolling: 'touch',
+      position: 'absolute',
+      inset: 0,
     }}>{children}</div>
   );
 }
